@@ -8,6 +8,7 @@ import { showError } from '#/shared/utils/notification';
 
 const Dashboard = loadable(import('#/pages/Dashboard'));
 const Customers = loadable(import('#/pages/Customers'));
+const Locations = loadable(import('#/pages/Locations'));
 
 function PrivateRoute() {
   const { pathname } = useLocation();
@@ -29,6 +30,7 @@ function PrivateRoute() {
 
   const routes = useRoutes([
     { element: <Customers />, path: '/customers' },
+    { element: <Locations />, path: '/locations' },
     { element: <Dashboard />, path: '/' },
   ]);
 

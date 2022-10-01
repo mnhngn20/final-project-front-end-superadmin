@@ -1,0 +1,22 @@
+query getLocations($input: GetLocationsInput!) {
+  getLocations(input: $input) {
+    page
+    total
+    totalPages
+    message
+    items {
+      id
+      name
+      address
+      long
+      lat
+      images
+      thumbnail
+      description
+      numOfFloor
+      income
+      isActive
+      createdAt
+    }
+  }
+}

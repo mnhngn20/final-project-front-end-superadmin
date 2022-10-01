@@ -1,0 +1,8 @@
+mutation updateLocationStatus($input: UpdateLocationStatusInput!) {
+  updateLocationStatus(input: $input) {
+    message
+    location {
+      id
+    }
+  }
+}

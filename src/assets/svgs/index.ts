@@ -21,3 +21,5 @@ export { ReactComponent as TagSVG } from './tag.svg';
 export { ReactComponent as TickCircleSVG } from './tick-circle.svg';
 export { ReactComponent as StarFilledSVG } from './star-filled.svg';
 export { ReactComponent as DashboardSVG } from './dashboard.svg';
+export { ReactComponent as HouseSVG } from './house.svg';
+export { ReactComponent as BroomSVG } from './broom.svg';

@@ -1,5 +1,0 @@
-mutation register($input: RegisterLoginInput!) {
-  register(input: $input) {
-    message
-  }
-}

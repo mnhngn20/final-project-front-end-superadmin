@@ -218,14 +218,16 @@ function List() {
 
   return (
     <>
-      <Filters
-        onFilter={onFilter}
-        extraButton={
-          <Button type="primary" onClick={() => setSelectedItem({})}>
-            Create
-          </Button>
-        }
-      />
+      <Filters onFilter={onFilter} />
+      <div className="float-right">
+        <Button
+          type="primary"
+          className="w-min"
+          onClick={() => setSelectedItem({})}
+        >
+          Create
+        </Button>
+      </div>
       <Table
         rowKey="id"
         dataSource={users as unknown as DeepPartial<User>[]}

@@ -1,27 +1,23 @@
 import { Form, Input, Col } from 'antd';
-import { GetUsersFilter } from './List';
+import { GetLocationsFilter } from './List';
 import StatusSelector from '#/shared/components/selectors/StatusSelector';
 import FilterWrapper from '#/shared/components/commons/FilterWrapper';
 
 interface Props {
-  onFilter: (values: GetUsersFilter) => void;
-  extraButton?: JSX.Element;
+  onFilter: (values: GetLocationsFilter) => void;
 }
 
-function Filter({ onFilter, extraButton }: Props) {
+function Filter({ onFilter }: Props) {
   return (
-    <FilterWrapper<GetUsersFilter>
-      onFilter={onFilter}
-      extraButton={extraButton}
-    >
+    <FilterWrapper<GetLocationsFilter> onFilter={onFilter}>
       <Col xl={6} xs={12}>
-        <Form.Item name="email">
-          <Input placeholder="Search Email" />
+        <Form.Item name="name">
+          <Input placeholder="Search Name" />
         </Form.Item>
       </Col>
       <Col xl={6} xs={12}>
-        <Form.Item name="fullName">
-          <Input placeholder="Search Name" />
+        <Form.Item name="address">
+          <Input placeholder="Search address" />
         </Form.Item>
       </Col>
       <Col xl={6} xs={12}>
