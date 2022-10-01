@@ -1,0 +1,213 @@
+@import '~antd/es/style/themes/default.less';
+
+@primary-color: #b94676;
+@secondary-color: #765dd1;
+@scroll-bar: #d9dce4;
+@grey-secondary-100: #c5c7cd;
+@grey-secondary-200: #aaafbb;
+@grey-secondary-300: #777e91;
+@grey-secondary-400: #3e3a55;
+@grey-secondary-500: #0e092a;
+@grey-light: #f5f2fd;
+@grey-light-100: #fcf8fa;
+@grey-light-200: #f9f0f4;
+@grey-light-300: #f7e9ef;
+@grey-light-500: #f1dae4;
+@grey-light-900: #250e18;
+@info: #5487f5;
+@info-light: #e5edfe;
+@success: #00c48c;
+@success-light: #d9f6ee;
+@alert: #fba707;
+@alert-light: #fff8e7;
+@warning: #ff934b;
+@warning-light: #fff1e9;
+@error: #f74360;
+@error-light: #ffe8eb;
+@table-header: #f8f9fc;
+@layout-content: #f4f3f9;
+@brown-dark: #250e18;
+@border: #d9d9d9;
+@gradient-secondary: linear-gradient(
+  108.22deg,
+  #765dd1 0%,
+  #935aa9 36.98%,
+  #b3567e 100%
+);
+
+@border-radius-base: 0.5rem;
+@checkbox-border-radius: 3px;
+
+:root {
+  --primary-color: @primary-color;
+  --secondary-color: @secondary-color;
+  --grey-secondary-100: @grey-secondary-100;
+  --grey-secondary-200: @grey-secondary-200;
+  --grey-secondary-300: @grey-secondary-300;
+  --grey-secondary-400: @grey-secondary-400;
+  --grey-secondary-500: @grey-secondary-500;
+  --grey-light: @grey-light;
+  --grey-light-100: @grey-light-100;
+  --grey-light-200: @grey-light-200;
+  --grey-light-300: @grey-light-300;
+  --grey-light-500: @grey-light-500;
+  --grey-light-900: @grey-light-900;
+  --info: @info;
+  --info-light: @info-light;
+  --success: @success;
+  --success-light: @success-light;
+  --alert: @alert;
+  --alert-light: @alert-light;
+  --warning: @warning;
+  --warning-light: @warning-light;
+  --error: @error;
+  --error-light: @error-light;
+  --scroll-bar: @scroll-bar;
+  --layout-content: @layout-content;
+  --brown-dark: @brown-dark;
+  --border: @border;
+}
+
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 0.375rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: @scroll-bar;
+  border-radius: 0.25rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: @grey-secondary-300;
+}
+
+.text-gradient {
+  background: @gradient-secondary;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.anticon {
+  svg {
+    vertical-align: unset;
+  }
+}
+
+.anticon {
+  svg {
+    vertical-align: unset;
+  }
+}
+
+.ant-image-preview-img {
+  margin: auto;
+  position: absolute;
+  inset: 0;
+}
+
+div.ant-spin-spinning {
+  display: flex;
+  color: #4a4453;
+}
+
+.ant-btn {
+  padding-inline: 1.5rem;
+  border-radius: 1.5rem !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &-default {
+    border-color: @primary-color !important;
+    color: @primary-color !important;
+
+    span {
+      color: @primary-color;
+    }
+  }
+}
+
+.ant-table {
+  background: none;
+  border-top: 1px solid rgba(185, 70, 118, 0.1);
+  border-radius: 0px !important;
+  &-thead {
+    & > tr > th {
+      border: none;
+      margin-bottom: 1rem;
+      color: @grey-secondary-400 !important;
+      text-transform: uppercase;
+      border: none !important;
+    }
+    .ant-table-cell {
+      background: @table-header;
+      color: @grey-secondary-400;
+      font-weight: 500;
+      &:not(.ant-table-cell-fix-right-first) {
+        border-left: 2px solid white !important;
+      }
+      &::before {
+        display: none;
+      }
+    }
+  }
+  &-tbody {
+    tr > td {
+      border: none;
+      vertical-align: baseline;
+    }
+  }
+}
+
+.ant-pro-global {
+  &-header {
+    &-layout-mix {
+      background-color: transparent !important;
+    }
+    &-collapsed-button {
+      span {
+        color: @brown-dark !important;
+      }
+    }
+  }
+}
+.ant-layout {
+  &-header {
+    background: white !important;
+  }
+  &-content {
+    background-color: @layout-content !important;
+  }
+  &-sider {
+    background-color: white !important;
+    .ant-menu {
+      &-title-content {
+        a {
+          color: @brown-dark !important;
+        }
+      }
+    }
+  }
+}
+
+.ant-modal {
+  &-body {
+    border-radius: 1.5rem;
+  }
+  &-mask {
+    background-color: rgba(7, 6, 50, 0.4) !important;
+  }
+}
