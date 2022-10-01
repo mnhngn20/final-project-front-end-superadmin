@@ -12,6 +12,7 @@ export interface FormModalProps<UpsertDto, Values = Record<string, unknown>> {
   initialValues?: Values;
   name: string;
   loading: boolean;
+  width?: string | number;
 }
 
 export type FormModalRef = FormInstance<Store>;
@@ -27,6 +28,7 @@ export const FormModal = forwardRef(
       selectedItem,
       name,
       initialValues,
+      width = '560',
     }: FormModalProps<UpsertDto>,
     ref: Ref<FormModalRef>,
   ) => {
@@ -43,7 +45,7 @@ export const FormModal = forwardRef(
         onClose={onClose}
         afterVisibleChange={afterVisibleChange}
         destroyOnClose
-        width="560"
+        width={width}
       >
         <Form
           onFinish={value =>
@@ -63,8 +65,8 @@ export const FormModal = forwardRef(
           <Row gutter={12} className="mt-12">
             <Col xs={12}>
               <Form.Item>
-                <Button type="ghost" onClick={onClose} block size="large">
-                  {t('button.cancel')}
+                <Button onClick={onClose} block size="large">
+                  Cancel
                 </Button>
               </Form.Item>
             </Col>

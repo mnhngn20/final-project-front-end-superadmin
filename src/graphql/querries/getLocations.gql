@@ -17,6 +17,13 @@ query getLocations($input: GetLocationsInput!) {
       income
       isActive
       createdAt
+      contactInformations {
+        address
+        name
+        id
+        phoneNumber
+        email
+      }
     }
   }
 }

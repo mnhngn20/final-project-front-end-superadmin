@@ -33,14 +33,14 @@ export type ChangeUserStatusInput = {
 };
 
 export type ContactInformation = {
-  address: Scalars['String'];
+  address?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
-  email: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   location: Location;
   locationId: Scalars['Float'];
-  name: Scalars['String'];
-  phoneNumber: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  phoneNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
 };
 
@@ -159,8 +159,8 @@ export type Location = {
   images?: Maybe<Scalars['String']>;
   income: Scalars['Float'];
   isActive: Scalars['Boolean'];
-  lat: Scalars['Float'];
-  long: Scalars['Float'];
+  lat?: Maybe<Scalars['Float']>;
+  long?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
   numOfFloor?: Maybe<Scalars['Float']>;
   rooms?: Maybe<Array<Room>>;
@@ -811,6 +811,13 @@ export const GetLocationDocument = gql`
         income
         isActive
         createdAt
+        contactInformations {
+          address
+          name
+          phoneNumber
+          id
+          email
+        }
       }
     }
   }
@@ -887,6 +894,13 @@ export const GetLocationsDocument = gql`
         income
         isActive
         createdAt
+        contactInformations {
+          address
+          name
+          id
+          phoneNumber
+          email
+        }
       }
     }
   }
@@ -1160,8 +1174,8 @@ export type GetLocationQuery = {
       id: string;
       name: string;
       address: string;
-      long: number;
-      lat: number;
+      long?: number | null;
+      lat?: number | null;
       images?: string | null;
       thumbnail?: string | null;
       description?: string | null;
@@ -1169,6 +1183,13 @@ export type GetLocationQuery = {
       income: number;
       isActive: boolean;
       createdAt: any;
+      contactInformations?: Array<{
+        address?: string | null;
+        name?: string | null;
+        phoneNumber?: string | null;
+        id: string;
+        email?: string | null;
+      }> | null;
     } | null;
   };
 };
@@ -1187,8 +1208,8 @@ export type GetLocationsQuery = {
       id: string;
       name: string;
       address: string;
-      long: number;
-      lat: number;
+      long?: number | null;
+      lat?: number | null;
       images?: string | null;
       thumbnail?: string | null;
       description?: string | null;
@@ -1196,6 +1217,13 @@ export type GetLocationsQuery = {
       income: number;
       isActive: boolean;
       createdAt: any;
+      contactInformations?: Array<{
+        address?: string | null;
+        name?: string | null;
+        id: string;
+        phoneNumber?: string | null;
+        email?: string | null;
+      }> | null;
     }>;
   };
 };
