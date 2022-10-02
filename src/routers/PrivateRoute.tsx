@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useRoutes } from 'react-router-dom';
+import { useNavigate, useRoutes } from 'react-router-dom';
 import PrivateLayout from '#/shared/components/layout/PrivateLayout';
 import { loadable } from '#/shared/utils/loadable';
 import { useMeQuery } from '#/generated/schemas';
@@ -7,11 +7,11 @@ import { userVar } from '#/graphql/cache';
 import { showError } from '#/shared/utils/notification';
 
 const Dashboard = loadable(import('#/pages/Dashboard'));
-const Customers = loadable(import('#/pages/Customers'));
+const Users = loadable(import('#/pages/Users'));
+const Profile = loadable(import('#/pages/Profile'));
 const Locations = loadable(import('#/pages/Locations'));
 
 function PrivateRoute() {
-  const { pathname } = useLocation();
   const navigate = useNavigate();
   const { data } = useMeQuery({
     onCompleted(data) {
@@ -29,14 +29,13 @@ function PrivateRoute() {
   };
 
   const routes = useRoutes([
-    { element: <Customers />, path: '/customers' },
+    { element: <Profile />, path: '/profile' },
+    { element: <Users />, path: '/users' },
     { element: <Locations />, path: '/locations' },
     { element: <Dashboard />, path: '/' },
   ]);
 
-  return pathname?.split('/')?.[1] === 'funeral-plan' ? (
-    routes
-  ) : (
+  return (
     <PrivateLayout user={data?.me?.user ?? {}} logout={logout}>
       {routes}
     </PrivateLayout>

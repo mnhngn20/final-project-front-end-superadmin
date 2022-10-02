@@ -20,6 +20,6 @@ export const formConfig = {
 
 export const appConfig = {
   logo: LogoFull,
-  name: 'TelObseques-client',
+  name: 'CanHo Super Admin',
   title: '',
 };

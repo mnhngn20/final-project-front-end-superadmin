@@ -16,7 +16,7 @@ function Filter({ onFilter }: Props) {
         </Form.Item>
       </Col>
       <Col xl={6} xs={12}>
-        <Form.Item name="fullName">
+        <Form.Item name="name">
           <Input placeholder="Search Name" />
         </Form.Item>
       </Col>

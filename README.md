@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://nextjs.org">
-    <h1 align="center">Telobseques Admin Web</h1>
+    <h1 align="center">CanHo Super Admin Web</h1>
   </a>
 </p>
 

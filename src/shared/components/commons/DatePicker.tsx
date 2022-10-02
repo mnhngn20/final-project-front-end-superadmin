@@ -7,5 +7,6 @@ import localeData from 'dayjs/plugin/localeData';
 
 dayjs.extend(weekday);
 dayjs.extend(localeData);
+
 export type Picker = 'date' | 'week' | 'month' | 'year' | 'time' | 'quarter';
 export const DatePicker = generatePicker(dayjsGenerateConfig);

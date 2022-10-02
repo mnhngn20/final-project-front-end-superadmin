@@ -1,6 +1,11 @@
 import { Form, Input, Modal } from 'antd';
 import { Dispatch, SetStateAction } from 'react';
 import useTypeSafeTranslation from '#/shared/hooks/useTypeSafeTranslation';
+import {
+  useChangePasswordMutation,
+  ChangePasswordInput,
+} from '#/generated/schemas';
+import { showError, showSuccess } from '#/shared/utils/notification';
 
 interface ChangePasswordProps {
   setVisible: Dispatch<SetStateAction<boolean>>;
@@ -11,20 +16,25 @@ function ChangePassword({ setVisible, visible }: ChangePasswordProps) {
   const [form] = Form.useForm();
   const { t } = useTypeSafeTranslation();
 
-  // const [changePassword] = useChangePasswordMutation({
-  //   onCompleted() {
-  //     showSuccess(t('confirm.changePasswordSuccess'));
-  //     setVisible(false);
-  //     form.resetFields();
-  //   },
-  //   onError: showError,
-  // });
+  const [changePassword] = useChangePasswordMutation({
+    onCompleted() {
+      showSuccess('Change password successfully!');
+      setVisible(false);
+      form.resetFields();
+    },
+    onError: showError,
+  });
 
-  // const handleSubmit = (values: ChangePasswordInputDto) => {
-  //   changePassword({
-  //     variables: { input: values },
-  //   });
-  // };
+  const handleSubmit = ({ oldPassword, password }: ChangePasswordInput) => {
+    changePassword({
+      variables: {
+        input: {
+          oldPassword,
+          password,
+        },
+      },
+    });
+  };
 
   const handleCancel = () => {
     setVisible(false);
@@ -38,14 +48,14 @@ function ChangePassword({ setVisible, visible }: ChangePasswordProps) {
         okText={t('button.save')}
         onOk={form.submit}
         onCancel={handleCancel}
-        width={450}
+        width={650}
       >
         <Form
           form={form}
           className="flex flex-col gap-8 px-[1rem]"
           layout="vertical"
           scrollToFirstError
-          // onFinish={handleSubmit}
+          onFinish={handleSubmit}
         >
           <div className="flex w-full flex-col">
             <Form.Item
@@ -59,26 +69,25 @@ function ChangePassword({ setVisible, visible }: ChangePasswordProps) {
               ]}
             >
               <Input.Password
-                className="h-[3rem]"
                 placeholder={t('placeholder.enterOldPassword')}
                 autoComplete="off"
               />
             </Form.Item>
             <Form.Item
-              name="newPassword"
-              label={t('commonFields.newPassword')}
+              name="password"
+              label="New Password"
               rules={[
                 {
                   required: true,
                 },
               ]}
             >
-              <Input.Password placeholder={t('placeholder.enterNewPassword')} />
+              <Input.Password placeholder="Enter your new password" />
             </Form.Item>
             <Form.Item
               name="confirmNewPassword"
               label={t('commonFields.comfirmPassword')}
-              dependencies={['newPassword']}
+              dependencies={['password']}
               hasFeedback
               rules={[
                 {
@@ -87,7 +96,7 @@ function ChangePassword({ setVisible, visible }: ChangePasswordProps) {
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
-                    if (!value || getFieldValue('newPassword') === value) {
+                    if (!value || getFieldValue('password') === value) {
                       return Promise.resolve();
                     }
                     return Promise.reject(

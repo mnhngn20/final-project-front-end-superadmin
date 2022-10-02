@@ -23,3 +23,5 @@ export { ReactComponent as StarFilledSVG } from './star-filled.svg';
 export { ReactComponent as DashboardSVG } from './dashboard.svg';
 export { ReactComponent as HouseSVG } from './house.svg';
 export { ReactComponent as BroomSVG } from './broom.svg';
+export { ReactComponent as MapSVG } from './map.svg';
+export { ReactComponent as BirthdaySVG } from './birthday.svg';

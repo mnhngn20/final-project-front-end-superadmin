@@ -40,8 +40,8 @@ function PrivateLayout({
       },
       {
         icon: <Icon component={CustomerSVG} />,
-        name: 'Customers',
-        path: '/customers',
+        name: 'Users',
+        path: '/users',
       },
       {
         icon: <Icon component={HouseSVG} />,

@@ -166,13 +166,11 @@ function List() {
             });
           };
           return (
-            <div className="flex items-center justify-center">
-              <Button className="mr-2 border-none" shape="circle">
-                <Link to={`/locations/${record?.id}`}>
-                  <EyeFilled />
-                </Link>
-              </Button>
-              <Button onClick={onEdit} className="border-none" shape="circle">
+            <div className="flex items-center justify-center gap-4 text-base text-primary-color">
+              <Link to={`/locations/${record?.id}`}>
+                <EyeFilled />
+              </Link>
+              <Button onClick={onEdit} type="link">
                 <EditFilled />
               </Button>
             </div>
