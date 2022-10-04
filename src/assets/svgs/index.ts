@@ -1,5 +1,5 @@
 export { ReactComponent as LeftSVG } from './left.svg';
-export { ReactComponent as RightVG } from './right.svg';
+export { ReactComponent as RightSVG } from './right.svg';
 export { ReactComponent as CustomerSVG } from './customer.svg';
 export { ReactComponent as ArrowDownSVG } from './arrow-down.svg';
 export { ReactComponent as MessageSVG } from './message.svg';

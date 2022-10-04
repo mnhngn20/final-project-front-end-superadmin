@@ -1,7 +1,7 @@
 import { Carousel, Empty, Image } from 'antd';
 import { useRef, useState } from 'react';
 import { CarouselRef } from 'antd/lib/carousel';
-import { EyeSVG, LeftSVG, RightVG } from '#/assets/svgs';
+import { EyeSVG, LeftSVG, RightSVG } from '#/assets/svgs';
 
 interface Props {
   images: (string | undefined)[];
@@ -64,7 +64,7 @@ const ImageCarousel = ({ images, height = 400, width = '100%' }: Props) => {
                     height: 35,
                   }}
                 >
-                  <RightVG width={24} height={24} />
+                  <RightSVG width={24} height={24} />
                 </div>
               </div>
               <p className="absolute right-0 bottom-0 z-50 mr-4 flex items-center gap-4 rounded-xl bg-[black] bg-opacity-50 px-4 py-2 text-[white] hover:bg-opacity-80">
