@@ -43,7 +43,11 @@ function LocationForm({}: Props) {
         </Form.Item>
       </Col>
       <Col span={12}>
-        <Form.Item name="numOfFloor" label="Location Total Floor">
+        <Form.Item
+          name="numOfFloor"
+          label="Location Total Floor"
+          rules={[{ required: true }]}
+        >
           <InputNumber
             placeholder="Enter location total number of floor"
             className="w-full"

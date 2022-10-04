@@ -120,7 +120,14 @@ function List() {
         dataIndex: 'thumbnail',
         key: 'thumbnail',
         render(thumbnail: string) {
-          return <Image url={thumbnail} width={100} height={100} />;
+          return (
+            <Image
+              url={thumbnail}
+              width={100}
+              height={100}
+              className="object-cover"
+            />
+          );
         },
       },
       {
