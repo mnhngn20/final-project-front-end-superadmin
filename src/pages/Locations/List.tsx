@@ -1,6 +1,5 @@
 import { Button, Table, Switch, Typography } from 'antd';
 import { useState, useMemo } from 'react';
-import { EditFilled, EyeFilled } from '@ant-design/icons';
 import LocationForm from './Form';
 import Filters from './Filters';
 import {
@@ -16,7 +15,7 @@ import { useTable } from '#/shared/hooks/useTable';
 import { Link } from 'react-router-dom';
 import { Coordinates, DeepPartial } from '#/shared/utils/type';
 import { showError, showSuccess } from '#/shared/utils/notification';
-import { AddSVG } from '#/assets/svgs';
+import { AddSVG, EditSVG, EyeSVG } from '#/assets/svgs';
 import Image from '#/shared/components/commons/Image';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 
@@ -168,10 +167,10 @@ function List() {
           return (
             <div className="flex items-center justify-center gap-4 text-base text-primary-color">
               <Link to={`/locations/${record?.id}`}>
-                <EyeFilled />
+                <EyeSVG width={24} height={24} />
               </Link>
               <Button onClick={onEdit} type="link">
-                <EditFilled />
+                <EditSVG width={24} height={24} />
               </Button>
             </div>
           );

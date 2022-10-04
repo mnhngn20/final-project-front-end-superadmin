@@ -1,4 +1,4 @@
-import LogoFull from '#/assets/images/logo-full.png';
+import Logo from '#/assets/images/logo.png';
 
 export const formConfig = {
   requiredMark: true,
@@ -19,7 +19,7 @@ export const formConfig = {
 };
 
 export const appConfig = {
-  logo: LogoFull,
+  logo: Logo,
   name: 'CanHo Super Admin',
   title: '',
 };

@@ -4,8 +4,8 @@ import ChangePassword from '../ChangePassword';
 import ProfileHeader from './ProfileHeader';
 import ProfileContent from './ProfileContent';
 import useTypeSafeTranslation from '#/shared/hooks/useTypeSafeTranslation';
-import { EditFilled } from '@ant-design/icons';
 import UpdateProfileFormModal from './UpdateProfileFormModal';
+import { EditSVG } from '#/assets/svgs';
 
 function ProfileDetail() {
   const { t } = useTypeSafeTranslation();
@@ -21,7 +21,7 @@ function ProfileDetail() {
           <Button
             onClick={() => setUpdateProfileModalVisible(true)}
             type="primary"
-            icon={<EditFilled />}
+            icon={<EditSVG width={18} height={18} className="anticon" />}
           >
             Edit Profile
           </Button>

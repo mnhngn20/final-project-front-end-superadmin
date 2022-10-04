@@ -1,5 +1,5 @@
 import { Typography } from 'antd';
-import ProfileItem from './ProfileItem';
+import DetailItem from '../../shared/components/commons/DetailItem';
 import {
   BirthdaySVG,
   CalendarSVG,
@@ -27,22 +27,18 @@ function ProfileContent() {
         {t('profiles.title')}
       </Title>
       <div className="grid grid-cols-2">
-        <ProfileItem
-          icon={SmsSVG}
-          value={user?.email}
-          className="grid-cols-1"
-        />
-        <ProfileItem
+        <DetailItem icon={SmsSVG} value={user?.email} className="grid-cols-1" />
+        <DetailItem
           icon={CallSVG}
           value={user?.phoneNumber}
           className="grid-cols-1"
         />
-        <ProfileItem icon={LocationSVG} value={user?.address} />
-        <ProfileItem icon={CalendarSVG} value={user?.createdAt} />
-        <ProfileItem icon={TagSVG} value={t('profiles.tag')} />
-        <ProfileItem icon={CardSVG} value={user.identityNumber} />
-        <ProfileItem icon={MapSVG} value={user?.location?.name} />
-        <ProfileItem
+        <DetailItem icon={LocationSVG} value={user?.address} />
+        <DetailItem icon={CalendarSVG} value={user?.createdAt} />
+        <DetailItem icon={TagSVG} value={t('profiles.tag')} />
+        <DetailItem icon={CardSVG} value={user.identityNumber} />
+        <DetailItem icon={MapSVG} value={user?.location?.name} />
+        <DetailItem
           icon={BirthdaySVG}
           value={formatDate(user.dateOfBirth, 'DD/MM/YYYY')}
         />

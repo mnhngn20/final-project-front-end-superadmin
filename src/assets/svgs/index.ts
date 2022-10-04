@@ -1,4 +1,5 @@
-export { ReactComponent as BackIcon } from './backIc.svg';
+export { ReactComponent as LeftSVG } from './left.svg';
+export { ReactComponent as RightVG } from './right.svg';
 export { ReactComponent as CustomerSVG } from './customer.svg';
 export { ReactComponent as ArrowDownSVG } from './arrow-down.svg';
 export { ReactComponent as MessageSVG } from './message.svg';
@@ -25,3 +26,9 @@ export { ReactComponent as HouseSVG } from './house.svg';
 export { ReactComponent as BroomSVG } from './broom.svg';
 export { ReactComponent as MapSVG } from './map.svg';
 export { ReactComponent as BirthdaySVG } from './birthday.svg';
+export { ReactComponent as EditSVG } from './edit.svg';
+export { ReactComponent as BuildingOutlineSVG } from './building-outline.svg';
+export { ReactComponent as RoomSVG } from './room.svg';
+export { ReactComponent as NoteSVG } from './note.svg';
+export { ReactComponent as UserOutlineSVG } from './user-outline.svg';
+export { ReactComponent as EyeSVG } from './eye.svg';

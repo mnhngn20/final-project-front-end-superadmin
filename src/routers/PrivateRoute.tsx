@@ -8,8 +8,10 @@ import { showError } from '#/shared/utils/notification';
 
 const Dashboard = loadable(import('#/pages/Dashboard'));
 const Users = loadable(import('#/pages/Users'));
+const UserDetail = loadable(import('#/pages/Users/Detail'));
 const Profile = loadable(import('#/pages/Profile'));
 const Locations = loadable(import('#/pages/Locations'));
+const LocationDetail = loadable(import('#/pages/Locations/Detail'));
 
 function PrivateRoute() {
   const navigate = useNavigate();
@@ -30,8 +32,26 @@ function PrivateRoute() {
 
   const routes = useRoutes([
     { element: <Profile />, path: '/profile' },
-    { element: <Users />, path: '/users' },
-    { element: <Locations />, path: '/locations' },
+    {
+      path: '/users',
+      children: [
+        {
+          index: true,
+          element: <Users />,
+        },
+        {
+          path: ':id',
+          element: <UserDetail />,
+        },
+      ],
+    },
+    {
+      path: '/locations',
+      children: [
+        { index: true, element: <Locations /> },
+        { path: ':id', element: <LocationDetail /> },
+      ],
+    },
     { element: <Dashboard />, path: '/' },
   ]);
 

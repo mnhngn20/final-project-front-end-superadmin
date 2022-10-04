@@ -59,40 +59,40 @@ function UploadImages({
 
   return (
     <div className="flex flex-wrap items-center gap-3">
-      {file && !loading ? (
-        <div className="relative flex h-28 w-28 items-center justify-center rounded-lg border-2 border-[#b1b7cc] p-2 hover:border-primary-color">
-          <Image
-            width="100%"
-            height="100%"
-            src={file}
-            className="rounded-lg object-cover"
-            alt="file"
-            preview={{
-              mask: (
-                <div className="flex w-full items-center justify-evenly text-lg">
-                  <EyeOutlined className="hover:text-primary-color" />
-                  <div>
-                    <DeleteOutlined
-                      className="z-[100] hover:text-primary-color"
-                      onClick={onRemove}
-                    />
+      <Upload
+        onChange={onChange}
+        customRequest={handleUpload}
+        onRemove={onRemove}
+        maxCount={20}
+        accept={IMAGE_TYPES}
+        showUploadList={false}
+        className="flex items-center"
+        {...restProps}
+      >
+        {file ? (
+          <div className="relative flex h-28 w-28 items-center justify-center rounded-lg border-2 border-[#b1b7cc] p-2 hover:border-primary-color">
+            <Image
+              width="100%"
+              height="100%"
+              src={file}
+              className="rounded-lg object-cover"
+              alt="file"
+              preview={{
+                mask: (
+                  <div className="flex w-full items-center justify-evenly text-lg">
+                    <EyeOutlined className="hover:text-primary-color" />
+                    <div>
+                      <DeleteOutlined
+                        className="z-[100] hover:text-primary-color"
+                        onClick={onRemove}
+                      />
+                    </div>
                   </div>
-                </div>
-              ),
-            }}
-          />
-        </div>
-      ) : (
-        <Upload
-          onChange={onChange}
-          customRequest={handleUpload}
-          onRemove={onRemove}
-          maxCount={20}
-          accept={IMAGE_TYPES}
-          showUploadList={false}
-          className="flex items-center"
-          {...restProps}
-        >
+                ),
+              }}
+            />
+          </div>
+        ) : (
           <div className="text-color-gray flex h-28 w-28 items-center justify-center rounded-lg border-2 border-dashed border-[#b1b7cc] text-[#b1b7cc] hover:border-primary-color hover:text-primary-color">
             {loading ? (
               <Spin />
@@ -103,8 +103,8 @@ function UploadImages({
               </div>
             )}
           </div>
-        </Upload>
-      )}
+        )}
+      </Upload>
     </div>
   );
 }

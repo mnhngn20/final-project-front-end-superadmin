@@ -5,7 +5,6 @@ import { Alert } from 'antd';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import RightContentHeader from './RightContentHeader';
-import Logo from '#/assets/images/logo.png';
 import { appConfig } from '#/configs/config';
 import { CustomerSVG, DashboardSVG, HouseSVG } from '#/assets/svgs';
 import { User } from '#/generated/schemas';
@@ -55,7 +54,7 @@ function PrivateLayout({
     <div className="h-screen">
       <ProLayout
         route={ROUTES}
-        logo={isCollapsed ? Logo : appConfig.logo}
+        logo={appConfig.logo}
         location={{
           pathname,
         }}

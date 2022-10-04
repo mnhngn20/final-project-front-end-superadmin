@@ -18,7 +18,13 @@ const getRoleColor = (role?: UserRole) => {
 
 function RoleTag({ role }: Props) {
   return (
-    <Tag className={`r-40 text-[white] ${getRoleColor(role)}`}>{role}</Tag>
+    <Tag
+      className={`r-40 border-none py-1 px-3 text-[white] ${getRoleColor(
+        role,
+      )}`}
+    >
+      {role}
+    </Tag>
   );
 }
 

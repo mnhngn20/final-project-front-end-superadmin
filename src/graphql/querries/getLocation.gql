@@ -17,8 +17,8 @@ query getLocation($id: Float!) {
       contactInformations {
         address
         name
-        phoneNumber
         id
+        phoneNumber
         email
       }
     }
