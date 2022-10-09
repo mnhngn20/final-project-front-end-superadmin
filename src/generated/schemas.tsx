@@ -605,6 +605,7 @@ export type UpsertLocationInput = {
   images?: InputMaybe<Scalars['String']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
   lat?: InputMaybe<Scalars['Float']>;
+  locationServiceIds?: InputMaybe<Array<Scalars['Float']>>;
   long?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
   numOfFloor: Scalars['Float'];
@@ -1345,6 +1346,11 @@ export const GetLocationDocument = gql`
         income
         isActive
         createdAt
+        locationServices {
+          id
+          name
+          description
+        }
         contactInformations {
           address
           name
@@ -1502,6 +1508,11 @@ export const GetLocationsDocument = gql`
         income
         isActive
         createdAt
+        locationServices {
+          id
+          name
+          description
+        }
         contactInformations {
           address
           name
@@ -1948,6 +1959,11 @@ export type GetLocationQuery = {
       income: number;
       isActive: boolean;
       createdAt: any;
+      locationServices: Array<{
+        id: string;
+        name: string;
+        description?: string | null;
+      }>;
       contactInformations?: Array<{
         address?: string | null;
         name?: string | null;
@@ -2003,6 +2019,11 @@ export type GetLocationsQuery = {
       income: number;
       isActive: boolean;
       createdAt: any;
+      locationServices: Array<{
+        id: string;
+        name: string;
+        description?: string | null;
+      }>;
       contactInformations?: Array<{
         address?: string | null;
         name?: string | null;

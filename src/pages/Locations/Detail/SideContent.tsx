@@ -13,6 +13,7 @@ import {
   NoteSVG,
   RoomSVG,
   SmsSVG,
+  StarSVG,
   UserOutlineSVG,
 } from '#/assets/svgs';
 import { formatDate } from '#/shared/utils/date';
@@ -54,6 +55,13 @@ function SideContent({ location }: SideContentProps) {
             icon={BuildingOutlineSVG}
             toolTip="Number of floor"
             value={location?.numOfFloor}
+          />
+          <DetailItem
+            icon={StarSVG}
+            toolTip="Services"
+            value={location?.locationServices
+              ?.map(service => service?.name)
+              ?.join(', ')}
           />
           <DetailItem
             icon={CalendarSVG}

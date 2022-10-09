@@ -39,6 +39,7 @@ function Detail() {
   const onSubmit = ({
     coordinates,
     contactInformations,
+    locationServiceIds,
     ...values
   }: UpsertLocationInput & {
     coordinates: Coordinates;
@@ -51,6 +52,8 @@ function Detail() {
             ...item,
             ...(item?.id && { id: Number(item?.id) }),
           })),
+          locationServiceIds: locationServiceIds?.map(id => Number(id)),
+
           lat: coordinates?.lat,
           long: coordinates?.long,
         },
@@ -80,8 +83,22 @@ function Detail() {
         onSubmit={onSubmit}
         name="Location"
         onClose={() => setEditModalVisible(false)}
-        selectedItem={editModalVisible ? { ...location } : undefined}
-        initialValues={{ ...location }}
+        selectedItem={
+          editModalVisible
+            ? {
+                ...location,
+                locationServiceIds: location?.locationServices?.map(
+                  service => service?.id,
+                ),
+              }
+            : undefined
+        }
+        initialValues={{
+          ...location,
+          locationServiceIds: location?.locationServices?.map(
+            service => service?.id,
+          ),
+        }}
         width="1000"
       >
         <LocationForm />

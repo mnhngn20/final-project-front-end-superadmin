@@ -9,18 +9,19 @@ import {
   Switch,
   Typography,
 } from 'antd';
-import { User } from '#/generated/schemas';
-import AddressSelector from '#/shared/components/commons/AddressSelector';
+import { Location } from '#/generated/schemas';
+import AddressSelector from '#/shared/components/selectors/AddressSelector';
 import UploadImages from '#/shared/components/commons/UploadImages';
 import UploadImage from '#/shared/components/commons/UploadImage';
 import { AddSVG } from '#/assets/svgs';
 import { CloseOutlined } from '@ant-design/icons';
+import LocationServiceSelector from '#/shared/components/selectors/LocationServiceSeletor';
 
 interface Props {
-  initialValues?: User;
+  initialValues?: Location;
 }
 
-function LocationForm({}: Props) {
+function LocationForm({ initialValues }: Props) {
   return (
     <Row gutter={[16, 16]}>
       <Col span={24}>
@@ -66,6 +67,19 @@ function LocationForm({}: Props) {
           rules={[{ required: true }]}
         >
           <AddressSelector placeholder="Enter location address" />
+        </Form.Item>
+      </Col>
+      <Col span={12}>
+        <Form.Item name="locationServiceIds" label="Services">
+          <LocationServiceSelector
+            mode="multiple"
+            placeholder="Enter location name"
+            initValues={
+              initialValues?.locationServices
+                ? [...initialValues?.locationServices]
+                : []
+            }
+          />
         </Form.Item>
       </Col>
       <Col span={12}>

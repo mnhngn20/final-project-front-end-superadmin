@@ -32,7 +32,7 @@ function List() {
   >(undefined);
   const { pageSize, onChange, currentPage, setCurrentPage } = useTable();
   const [selectedItem, setSelectedItem] = useState<
-    DeepPartial<Location> | undefined
+    DeepPartial<Location & { locationServiceIds?: string[] }> | undefined
   >(undefined);
 
   const clearSelectedItem = () => {
@@ -90,6 +90,7 @@ function List() {
   const onSubmit = ({
     coordinates,
     contactInformations,
+    locationServiceIds,
     ...values
   }: UpsertLocationInput & {
     coordinates: Coordinates;
@@ -102,6 +103,7 @@ function List() {
             ...item,
             ...(item?.id && { id: Number(item?.id) }),
           })),
+          locationServiceIds: locationServiceIds?.map(id => Number(id)),
           lat: coordinates?.lat,
           long: coordinates?.long,
         },
@@ -170,6 +172,9 @@ function List() {
           const onEdit = () => {
             setSelectedItem({
               ...record,
+              locationServiceIds: record?.locationServices?.map(
+                service => service?.id,
+              ),
             });
           };
           return (
