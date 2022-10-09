@@ -1,5 +1,5 @@
-query getAmenityTypes($input: GetAmenityTypesInput!) {
-  getAmenityTypes(input: $input) {
+query getLocationServices($input: GetLocationServicesInput!) {
+  getLocationServices(input: $input) {
     page
     total
     totalPages
@@ -7,7 +7,6 @@ query getAmenityTypes($input: GetAmenityTypesInput!) {
     items {
       id
       name
-      icon
       description
       isActive
       createdAt

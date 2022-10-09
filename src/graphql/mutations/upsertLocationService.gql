@@ -1,0 +1,8 @@
+mutation upsertLocationService($input: UpsertLocationServiceInput!) {
+  upsertLocationService(input: $input) {
+    message
+    locationService {
+      id
+    }
+  }
+}

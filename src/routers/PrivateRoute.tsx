@@ -13,6 +13,7 @@ const Profile = loadable(import('#/pages/Profile'));
 const Locations = loadable(import('#/pages/Locations'));
 const LocationDetail = loadable(import('#/pages/Locations/Detail'));
 const AmenityTypes = loadable(import('#/pages/AmenityType'));
+const LocationServices = loadable(import('#/pages/LocationServices'));
 
 function PrivateRoute() {
   const navigate = useNavigate();
@@ -43,6 +44,15 @@ function PrivateRoute() {
         {
           path: ':id',
           element: <UserDetail />,
+        },
+      ],
+    },
+    {
+      path: '/location-services',
+      children: [
+        {
+          index: true,
+          element: <LocationServices />,
         },
       ],
     },

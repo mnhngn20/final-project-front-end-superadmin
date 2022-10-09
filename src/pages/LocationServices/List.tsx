@@ -1,44 +1,43 @@
 import { Button, Table, Typography } from 'antd';
 import { useState, useMemo } from 'react';
-import AmenityForm from './Form';
+import LocationServiceForm from './Form';
 import Filters from './Filters';
 import {
   OrderBy,
   Location,
-  AmenityType,
-  useGetAmenityTypesQuery,
-  useUpsertAmenityTypeMutation,
-  UpsertAmenityTypeInput,
+  useGetLocationServicesQuery,
+  useUpsertLocationServiceMutation,
+  UpsertLocationServiceInput,
+  LocationService,
 } from '#/generated/schemas';
 import { FormModal } from '#/shared/components/commons/FormModal';
 import { useTable } from '#/shared/hooks/useTable';
 import { DeepPartial } from '#/shared/utils/type';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { AddSVG, EditSVG } from '#/assets/svgs';
-import Image from '#/shared/components/commons/Image';
-import DefaultImage from '#/assets/images/default.png';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 import CustomTag from '#/shared/components/commons/CustomTag';
 import { formatDate } from '#/shared/utils/date';
 
-export type GetAmenityTypesFilter = {
+export type GetLocationServicesFilter<T = string> = {
   name?: string;
+  isActive?: T;
 };
 
 function List() {
-  const [filters, setFilters] = useState<GetAmenityTypesFilter | undefined>(
-    undefined,
-  );
+  const [filters, setFilters] = useState<
+    GetLocationServicesFilter<boolean> | undefined
+  >(undefined);
   const { pageSize, onChange, currentPage, setCurrentPage } = useTable();
   const [selectedItem, setSelectedItem] = useState<
-    DeepPartial<AmenityType> | undefined
+    DeepPartial<LocationService> | undefined
   >(undefined);
 
   const clearSelectedItem = () => {
     setSelectedItem(undefined);
   };
 
-  const { data, loading, refetch } = useGetAmenityTypesQuery({
+  const { data, loading, refetch } = useGetLocationServicesQuery({
     variables: {
       input: {
         orderBy: OrderBy.Desc,
@@ -50,15 +49,15 @@ function List() {
     fetchPolicy: 'network-only',
   });
 
-  const amenityTypes = data?.getAmenityTypes?.items ?? [];
+  const locationServices = data?.getLocationServices?.items ?? [];
 
-  const [upsertAmenityType, { loading: upsertAmenityTypeLoading }] =
-    useUpsertAmenityTypeMutation({
+  const [upsertLocationService, { loading: upsertLocationServiceLoading }] =
+    useUpsertLocationServiceMutation({
       onCompleted() {
         showSuccess(
           selectedItem?.id
-            ? 'Updated amenity type successfully!'
-            : 'Created amenity type successfully!',
+            ? 'Updated location service successfully!'
+            : 'Created location service successfully!',
         );
         clearSelectedItem();
         refetch();
@@ -66,16 +65,19 @@ function List() {
       onError: showError,
     });
 
-  const onFilter = ({ name }: GetAmenityTypesFilter) => {
+  const onFilter = ({ name, isActive }: GetLocationServicesFilter) => {
     const newFilter = {
       ...(name && { name }),
+      ...(isActive && {
+        isActive: isActive === 'true',
+      }),
     };
     setCurrentPage(1);
     setFilters(newFilter);
   };
 
-  const onSubmit = ({ ...values }: UpsertAmenityTypeInput) => {
-    upsertAmenityType({
+  const onSubmit = ({ ...values }: UpsertLocationServiceInput) => {
+    upsertLocationService({
       variables: {
         input: {
           ...values,
@@ -95,22 +97,7 @@ function List() {
         key: 'id',
       },
       {
-        title: 'Image',
-        dataIndex: 'icon',
-        key: 'icon',
-        render(icon: string) {
-          return (
-            <Image
-              url={icon ?? DefaultImage}
-              width={100}
-              height={100}
-              className="object-cover"
-            />
-          );
-        },
-      },
-      {
-        title: 'Amenity Name',
+        title: 'Service Name',
         dataIndex: 'name',
         key: 'name',
       },
@@ -170,7 +157,7 @@ function List() {
       <div className="rounded-xl bg-[white] px-4">
         <div className="flex items-center justify-between py-4">
           <Typography className="text-xl font-semibold">
-            Amenity Type List
+            Location Service List
           </Typography>
           <Button
             type="primary"
@@ -182,31 +169,31 @@ function List() {
         </div>
         <Table
           rowKey="id"
-          dataSource={amenityTypes}
+          dataSource={locationServices}
           columns={COLUMNS}
           scroll={{ x: 'max-content' }}
-          loading={loading || upsertAmenityTypeLoading}
+          loading={loading || upsertLocationServiceLoading}
           onChange={onChange}
           pagination={false}
         />
         <PaginationPanel
           current={currentPage ?? 1}
           pageSize={10}
-          total={data?.getAmenityTypes?.total ?? 0}
+          total={data?.getLocationServices?.total ?? 0}
           setCurrentPage={setCurrentPage}
           className="flex justify-end py-6 pr-6"
           showQuickJumper
         />
       </div>
-      <FormModal<UpsertAmenityTypeInput>
-        loading={upsertAmenityTypeLoading}
+      <FormModal<UpsertLocationServiceInput>
+        loading={upsertLocationServiceLoading}
         onSubmit={onSubmit}
-        name="Amenity Type"
+        name="Location Service"
         onClose={clearSelectedItem}
         selectedItem={selectedItem}
         initialValues={selectedItem}
       >
-        <AmenityForm />
+        <LocationServiceForm />
       </FormModal>
     </>
   );

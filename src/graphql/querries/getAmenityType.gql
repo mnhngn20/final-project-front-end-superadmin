@@ -4,6 +4,7 @@ query getAmenityType($id: Float!) {
     amenityType {
       id
       name
+      icon
       isActive
       description
       createdAt

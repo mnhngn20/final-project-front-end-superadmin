@@ -27,7 +27,6 @@ export type Amenity = {
   amenityTypeId: Scalars['Float'];
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
-  icon?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   isActive: Scalars['Boolean'];
   location: Location;
@@ -53,6 +52,7 @@ export type AmenityType = {
   amenities?: Maybe<Array<Amenity>>;
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   isActive: Scalars['Boolean'];
   name: Scalars['String'];
@@ -574,7 +574,6 @@ export type UpdateUserInput = {
 export type UpsertAmenityInput = {
   amenityTypeId: Scalars['Float'];
   description?: InputMaybe<Scalars['String']>;
-  icon?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Float']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
   locationId?: InputMaybe<Scalars['Float']>;
@@ -583,6 +582,7 @@ export type UpsertAmenityInput = {
 
 export type UpsertAmenityTypeInput = {
   description?: InputMaybe<Scalars['String']>;
+  icon?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Float']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
@@ -1080,6 +1080,59 @@ export type UpsertLocationMutationOptions = Apollo.BaseMutationOptions<
   UpsertLocationMutation,
   UpsertLocationMutationVariables
 >;
+export const UpsertLocationServiceDocument = gql`
+  mutation upsertLocationService($input: UpsertLocationServiceInput!) {
+    upsertLocationService(input: $input) {
+      message
+      locationService {
+        id
+      }
+    }
+  }
+`;
+export type UpsertLocationServiceMutationFn = Apollo.MutationFunction<
+  UpsertLocationServiceMutation,
+  UpsertLocationServiceMutationVariables
+>;
+
+/**
+ * __useUpsertLocationServiceMutation__
+ *
+ * To run a mutation, you first call `useUpsertLocationServiceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertLocationServiceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertLocationServiceMutation, { data, loading, error }] = useUpsertLocationServiceMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertLocationServiceMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertLocationServiceMutation,
+    UpsertLocationServiceMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertLocationServiceMutation,
+    UpsertLocationServiceMutationVariables
+  >(UpsertLocationServiceDocument, options);
+}
+export type UpsertLocationServiceMutationHookResult = ReturnType<
+  typeof useUpsertLocationServiceMutation
+>;
+export type UpsertLocationServiceMutationResult =
+  Apollo.MutationResult<UpsertLocationServiceMutation>;
+export type UpsertLocationServiceMutationOptions = Apollo.BaseMutationOptions<
+  UpsertLocationServiceMutation,
+  UpsertLocationServiceMutationVariables
+>;
 export const ChangeUserStatusDocument = gql`
   mutation changeUserStatus($input: ChangeUserStatusInput!) {
     changeUserStatus(input: $input)
@@ -1135,6 +1188,7 @@ export const GetAmenityTypeDocument = gql`
       amenityType {
         id
         name
+        icon
         isActive
         description
         createdAt
@@ -1209,6 +1263,7 @@ export const GetAmenityTypesDocument = gql`
       items {
         id
         name
+        icon
         description
         isActive
         createdAt
@@ -1352,6 +1407,80 @@ export type GetLocationQueryResult = Apollo.QueryResult<
 >;
 export function refetchGetLocationQuery(variables: GetLocationQueryVariables) {
   return { query: GetLocationDocument, variables: variables };
+}
+export const GetLocationServicesDocument = gql`
+  query getLocationServices($input: GetLocationServicesInput!) {
+    getLocationServices(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        name
+        description
+        isActive
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetLocationServicesQuery__
+ *
+ * To run a query within a React component, call `useGetLocationServicesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLocationServicesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLocationServicesQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetLocationServicesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetLocationServicesQuery,
+    GetLocationServicesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetLocationServicesQuery,
+    GetLocationServicesQueryVariables
+  >(GetLocationServicesDocument, options);
+}
+export function useGetLocationServicesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetLocationServicesQuery,
+    GetLocationServicesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetLocationServicesQuery,
+    GetLocationServicesQueryVariables
+  >(GetLocationServicesDocument, options);
+}
+export type GetLocationServicesQueryHookResult = ReturnType<
+  typeof useGetLocationServicesQuery
+>;
+export type GetLocationServicesLazyQueryHookResult = ReturnType<
+  typeof useGetLocationServicesLazyQuery
+>;
+export type GetLocationServicesQueryResult = Apollo.QueryResult<
+  GetLocationServicesQuery,
+  GetLocationServicesQueryVariables
+>;
+export function refetchGetLocationServicesQuery(
+  variables: GetLocationServicesQueryVariables,
+) {
+  return { query: GetLocationServicesDocument, variables: variables };
 }
 export const GetLocationsDocument = gql`
   query getLocations($input: GetLocationsInput!) {
@@ -1741,6 +1870,17 @@ export type UpsertLocationMutation = {
   upsertLocation: { message?: string | null; location?: { id: string } | null };
 };
 
+export type UpsertLocationServiceMutationVariables = Exact<{
+  input: UpsertLocationServiceInput;
+}>;
+
+export type UpsertLocationServiceMutation = {
+  upsertLocationService: {
+    message?: string | null;
+    locationService?: { id: string } | null;
+  };
+};
+
 export type ChangeUserStatusMutationVariables = Exact<{
   input: ChangeUserStatusInput;
 }>;
@@ -1757,6 +1897,7 @@ export type GetAmenityTypeQuery = {
     amenityType?: {
       id: string;
       name: string;
+      icon?: string | null;
       isActive: boolean;
       description?: string | null;
       createdAt: any;
@@ -1778,6 +1919,7 @@ export type GetAmenityTypesQuery = {
     items: Array<{
       id: string;
       name: string;
+      icon?: string | null;
       description?: string | null;
       isActive: boolean;
       createdAt: any;
@@ -1814,6 +1956,27 @@ export type GetLocationQuery = {
         email?: string | null;
       }> | null;
     } | null;
+  };
+};
+
+export type GetLocationServicesQueryVariables = Exact<{
+  input: GetLocationServicesInput;
+}>;
+
+export type GetLocationServicesQuery = {
+  getLocationServices: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      name: string;
+      description?: string | null;
+      isActive: boolean;
+      createdAt: any;
+      updatedAt: any;
+    }>;
   };
 };
 
