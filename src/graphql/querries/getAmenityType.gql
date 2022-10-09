@@ -1,0 +1,13 @@
+query getAmenityType($id: Float!) {
+  getAmenityType(id: $id) {
+    message
+    amenityType {
+      id
+      name
+      isActive
+      description
+      createdAt
+      updatedAt
+    }
+  }
+}

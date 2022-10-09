@@ -1,45 +1,43 @@
-import { Button, Table, Switch, Typography } from 'antd';
+import { Button, Table, Typography } from 'antd';
 import { useState, useMemo } from 'react';
-import LocationForm from './Form';
+import AmenityForm from './Form';
 import Filters from './Filters';
 import {
   OrderBy,
-  useGetLocationsQuery,
   Location,
-  useUpdateLocationStatusMutation,
-  useUpsertLocationMutation,
-  UpsertLocationInput,
+  AmenityType,
+  useGetAmenityTypesQuery,
+  useUpsertAmenityTypeMutation,
+  UpsertAmenityTypeInput,
 } from '#/generated/schemas';
 import { FormModal } from '#/shared/components/commons/FormModal';
 import { useTable } from '#/shared/hooks/useTable';
-import { Link } from 'react-router-dom';
-import { Coordinates, DeepPartial } from '#/shared/utils/type';
+import { DeepPartial } from '#/shared/utils/type';
 import { showError, showSuccess } from '#/shared/utils/notification';
-import { AddSVG, EditSVG, EyeSVG } from '#/assets/svgs';
-import DefaultImage from '#/assets/images/default.png';
+import { AddSVG, EditSVG } from '#/assets/svgs';
 import Image from '#/shared/components/commons/Image';
+import DefaultImage from '#/assets/images/default.png';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
+import CustomTag from '#/shared/components/commons/CustomTag';
 
-export type GetLocationsFilter<T = string> = {
+export type GetAmenityTypesFilter = {
   name?: string;
-  address?: string;
-  isActive?: T;
 };
 
 function List() {
-  const [filters, setFilters] = useState<
-    GetLocationsFilter<boolean> | undefined
-  >(undefined);
+  const [filters, setFilters] = useState<GetAmenityTypesFilter | undefined>(
+    undefined,
+  );
   const { pageSize, onChange, currentPage, setCurrentPage } = useTable();
   const [selectedItem, setSelectedItem] = useState<
-    DeepPartial<Location> | undefined
+    DeepPartial<AmenityType> | undefined
   >(undefined);
 
   const clearSelectedItem = () => {
     setSelectedItem(undefined);
   };
 
-  const { data, loading, refetch } = useGetLocationsQuery({
+  const { data, loading, refetch } = useGetAmenityTypesQuery({
     variables: {
       input: {
         orderBy: OrderBy.Desc,
@@ -51,25 +49,15 @@ function List() {
     fetchPolicy: 'network-only',
   });
 
-  const locations = data?.getLocations?.items ?? [];
+  const amenityTypes = data?.getAmenityTypes?.items ?? [];
 
-  const [updateLocationStatus, { loading: changeLocationStatusLoading }] =
-    useUpdateLocationStatusMutation({
-      onCompleted() {
-        showSuccess('Updated location status successfully!');
-        refetch();
-        clearSelectedItem();
-      },
-      onError: showError,
-    });
-
-  const [upsertLocation, { loading: upsertLocationLoading }] =
-    useUpsertLocationMutation({
+  const [upsertAmenityType, { loading: upsertAmenityTypeLoading }] =
+    useUpsertAmenityTypeMutation({
       onCompleted() {
         showSuccess(
           selectedItem?.id
-            ? 'Updated location successfully!'
-            : 'Created location successfully!',
+            ? 'Updated amenity type successfully!'
+            : 'Created amenity type successfully!',
         );
         clearSelectedItem();
         refetch();
@@ -77,33 +65,22 @@ function List() {
       onError: showError,
     });
 
-  const onFilter = ({ name, address, isActive }: GetLocationsFilter) => {
+  const onFilter = ({ name }: GetAmenityTypesFilter) => {
     const newFilter = {
       ...(name && { name }),
-      ...(address && { address }),
-      ...(isActive && { isActive: isActive === 'true' }),
     };
     setCurrentPage(1);
     setFilters(newFilter);
   };
 
-  const onSubmit = ({
-    coordinates,
-    contactInformations,
-    ...values
-  }: UpsertLocationInput & {
-    coordinates: Coordinates;
-  }) => {
-    upsertLocation({
+  const onSubmit = ({ ...values }: UpsertAmenityTypeInput) => {
+    upsertAmenityType({
       variables: {
         input: {
           ...values,
-          contactInformations: contactInformations?.map(item => ({
-            ...item,
-            ...(item?.id && { id: Number(item?.id) }),
-          })),
-          lat: coordinates?.lat,
-          long: coordinates?.long,
+          ...(selectedItem?.id && {
+            id: Number(selectedItem?.id),
+          }),
         },
       },
     });
@@ -118,12 +95,12 @@ function List() {
       },
       {
         title: 'Image',
-        dataIndex: 'thumbnail',
-        key: 'thumbnail',
-        render(thumbnail: string) {
+        dataIndex: 'icon',
+        key: 'icon',
+        render(icon: string) {
           return (
             <Image
-              url={thumbnail ?? DefaultImage}
+              url={icon ?? DefaultImage}
               width={100}
               height={100}
               className="object-cover"
@@ -132,34 +109,29 @@ function List() {
         },
       },
       {
-        title: 'Location Name',
+        title: 'Amenity Name',
         dataIndex: 'name',
         key: 'name',
       },
       {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
+        title: 'Description',
+        dataIndex: 'description',
+        key: 'description',
       },
       {
         title: 'Status',
         dataIndex: 'isActive',
         key: 'isActive',
-        render: (_: unknown, { id, isActive }: DeepPartial<Location>) => (
-          <Switch
-            checked={isActive}
-            onChange={() =>
-              updateLocationStatus({
-                variables: {
-                  input: {
-                    id: Number(id),
-                    isActive: !isActive,
-                  },
-                },
-              })
-            }
-          />
-        ),
+        render(isActive: boolean) {
+          return (
+            <CustomTag
+              content={isActive ? 'Active' : 'Inactive'}
+              className={
+                isActive ? 'bg-success text-[white]' : 'bg-warning text-[white]'
+              }
+            />
+          );
+        },
       },
       {
         title: '',
@@ -174,9 +146,6 @@ function List() {
           };
           return (
             <div className="flex items-center justify-center gap-4 text-base text-primary-color">
-              <Link to={`/locations/${record?.id}`}>
-                <EyeSVG width={24} height={24} />
-              </Link>
               <Button onClick={onEdit} type="link">
                 <EditSVG width={24} height={24} />
               </Button>
@@ -185,7 +154,7 @@ function List() {
         },
       },
     ],
-    [updateLocationStatus],
+    [],
   );
 
   return (
@@ -194,7 +163,7 @@ function List() {
       <div className="rounded-xl bg-[white] px-4">
         <div className="flex items-center justify-between py-4">
           <Typography className="text-xl font-semibold">
-            Location List
+            Amenity Type List
           </Typography>
           <Button
             type="primary"
@@ -206,38 +175,31 @@ function List() {
         </div>
         <Table
           rowKey="id"
-          dataSource={locations}
+          dataSource={amenityTypes}
           columns={COLUMNS}
           scroll={{ x: 'max-content' }}
-          loading={
-            loading || upsertLocationLoading || changeLocationStatusLoading
-          }
+          loading={loading || upsertAmenityTypeLoading}
           onChange={onChange}
           pagination={false}
         />
         <PaginationPanel
           current={currentPage ?? 1}
           pageSize={10}
-          total={data?.getLocations?.total ?? 0}
+          total={data?.getAmenityTypes?.total ?? 0}
           setCurrentPage={setCurrentPage}
           className="flex justify-end py-6 pr-6"
           showQuickJumper
         />
       </div>
-      <FormModal<
-        UpsertLocationInput & {
-          coordinates: Coordinates;
-        }
-      >
-        loading={upsertLocationLoading}
+      <FormModal<UpsertAmenityTypeInput>
+        loading={upsertAmenityTypeLoading}
         onSubmit={onSubmit}
-        name="Location"
+        name="Amenity Type"
         onClose={clearSelectedItem}
         selectedItem={selectedItem}
         initialValues={selectedItem}
-        width="1000"
       >
-        <LocationForm />
+        <AmenityForm />
       </FormModal>
     </>
   );

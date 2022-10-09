@@ -32,3 +32,4 @@ export { ReactComponent as RoomSVG } from './room.svg';
 export { ReactComponent as NoteSVG } from './note.svg';
 export { ReactComponent as UserOutlineSVG } from './user-outline.svg';
 export { ReactComponent as EyeSVG } from './eye.svg';
+export { ReactComponent as DevicesOutlineSVG } from './devices-outline.svg';
