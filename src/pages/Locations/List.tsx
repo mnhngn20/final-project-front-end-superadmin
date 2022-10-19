@@ -139,6 +139,14 @@ function List() {
         key: 'name',
       },
       {
+        title: 'Electric Counter Price',
+        dataIndex: 'electricCounterPrice',
+        key: 'electricCounterPrice',
+        render(electricCounterPrice: number) {
+          return electricCounterPrice.toLocaleString();
+        },
+      },
+      {
         title: 'Address',
         dataIndex: 'address',
         key: 'address',

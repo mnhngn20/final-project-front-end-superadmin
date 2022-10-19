@@ -59,16 +59,18 @@ function UserForm({ initialValues }: Props) {
           >
             <Input type="password" placeholder="Confirm your password" />
           </Form.Item>
-          <Form.Item
-            name="locationId"
-            label="Location"
-            hidden={!!initialValues?.id}
-            rules={[{ required: true }]}
-          >
-            <LocationSelector placeholder="Select user location" />
-          </Form.Item>
         </>
       )}
+      <Form.Item
+        name="locationId"
+        label="Location"
+        rules={[{ required: true }]}
+      >
+        <LocationSelector
+          disabled={!!initialValues?.id}
+          placeholder="Select user location"
+        />
+      </Form.Item>
       <Form.Item name="name" label="Full Name">
         <Input type="text" placeholder="Enter user name" />
       </Form.Item>

@@ -62,6 +62,18 @@ function LocationForm({ initialValues }: Props) {
       </Col>
       <Col span={12}>
         <Form.Item
+          name="electricCounterPrice"
+          label="Electric Counter Price"
+          rules={[{ required: true }]}
+        >
+          <InputNumber
+            placeholder="Enter electric counter price"
+            className="w-full"
+          />
+        </Form.Item>
+      </Col>
+      <Col span={12}>
+        <Form.Item
           name="address"
           label="Location Address"
           rules={[{ required: true }]}

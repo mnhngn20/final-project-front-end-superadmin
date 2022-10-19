@@ -17,6 +17,7 @@ query getLocations($input: GetLocationsInput!) {
       income
       isActive
       createdAt
+      electricCounterPrice
       locationServices {
         id
         name

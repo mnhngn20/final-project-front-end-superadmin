@@ -20,6 +20,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   DateTime: any;
+  JSONObject: any;
 };
 
 export type Amenity = {
@@ -107,6 +108,11 @@ export type CreateUserInput = {
   roomId?: InputMaybe<Scalars['Float']>;
 };
 
+export enum DiscountType {
+  FixedCashDiscount = 'FixedCashDiscount',
+  PercentageDiscount = 'PercentageDiscount',
+}
+
 export type Equipment = {
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
@@ -165,6 +171,17 @@ export type GetEquipmentsInput = {
   roomId?: InputMaybe<Scalars['Float']>;
 };
 
+export type GetLocationReservationsInput = {
+  createdById?: InputMaybe<Scalars['Float']>;
+  fromDate?: InputMaybe<Scalars['DateTime']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  status?: InputMaybe<LocationReservationStatus>;
+  toDate?: InputMaybe<Scalars['DateTime']>;
+};
+
 export type GetLocationServicesInput = {
   isActive?: InputMaybe<Scalars['Boolean']>;
   limit?: InputMaybe<Scalars['Float']>;
@@ -176,10 +193,24 @@ export type GetLocationServicesInput = {
 export type GetLocationsInput = {
   address?: InputMaybe<Scalars['String']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
+  lat?: InputMaybe<Scalars['Float']>;
   limit?: InputMaybe<Scalars['Float']>;
+  locationServiceIds?: InputMaybe<Array<Scalars['Float']>>;
+  long?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
   orderBy?: InputMaybe<OrderBy>;
   page?: InputMaybe<Scalars['Float']>;
+};
+
+export type GetPaymentsInput = {
+  limit?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  locationReservationId?: InputMaybe<Scalars['Float']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  roomId?: InputMaybe<Scalars['Float']>;
+  status?: InputMaybe<PaymentStatus>;
+  userIds?: InputMaybe<Array<Scalars['Float']>>;
 };
 
 export type GetRoomsInput = {
@@ -210,6 +241,11 @@ export type IResponse = {
   message?: Maybe<Scalars['String']>;
 };
 
+export enum LocationReservationStatus {
+  Draft = 'Draft',
+  Published = 'Published',
+}
+
 export type ListResponse = {
   message?: Maybe<Scalars['String']>;
   page?: Maybe<Scalars['Float']>;
@@ -231,16 +267,20 @@ export type Location = {
   contactInformations?: Maybe<Array<ContactInformation>>;
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
+  electricCounterPrice?: Maybe<Scalars['Float']>;
   equipments?: Maybe<Array<Equipment>>;
+  geoLocation?: Maybe<Scalars['JSONObject']>;
   id: Scalars['ID'];
   images?: Maybe<Scalars['String']>;
   income: Scalars['Float'];
   isActive: Scalars['Boolean'];
   lat?: Maybe<Scalars['Float']>;
+  locationReservations?: Maybe<Array<LocationReservation>>;
   locationServices: Array<LocationService>;
   long?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
   numOfFloor?: Maybe<Scalars['Float']>;
+  payments?: Maybe<Array<Payment>>;
   rooms?: Maybe<Array<Room>>;
   thumbnail?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
@@ -263,6 +303,34 @@ export type LocationListResponse = ListResponse & {
   totalPages?: Maybe<Scalars['Float']>;
 };
 
+export type LocationReservation = {
+  createdAt: Scalars['DateTime'];
+  createdBy: User;
+  createdById: Scalars['Float'];
+  id: Scalars['ID'];
+  location: Location;
+  locationId: Scalars['Float'];
+  payments?: Maybe<Array<Payment>>;
+  startDate: Scalars['DateTime'];
+  status: Scalars['String'];
+  totalCalculatedPrice: Scalars['Float'];
+  totalReceivedPrice: Scalars['Float'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type LocationReservationListResponse = ListResponse & {
+  items: Array<LocationReservation>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type LocationReservationResponse = IResponse & {
+  locationReservation?: Maybe<LocationReservation>;
+  message?: Maybe<Scalars['String']>;
+};
+
 export type LocationResponse = IResponse & {
   location?: Maybe<Location>;
   message?: Maybe<Scalars['String']>;
@@ -273,7 +341,6 @@ export type LocationService = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   isActive: Scalars['Boolean'];
-  location: Array<Location>;
   name: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
@@ -311,12 +378,15 @@ export type Mutation = {
   updateEquipmentStatus: EquipmentResponse;
   updateLocationStatus: LocationResponse;
   updateMe: UserResponse;
+  updatePaymentStatus: PaymentResponse;
   updateUser: UserResponse;
   upsertAmenity: AmenityResponse;
   upsertAmenityType: AmenityTypeResponse;
   upsertEquipment: EquipmentResponse;
   upsertLocation: LocationResponse;
+  upsertLocationReservation: LocationReservationResponse;
   upsertLocationService: LocationServiceResponse;
+  upsertPayment: PaymentResponse;
   upsertRoom: RoomResponse;
 };
 
@@ -368,6 +438,10 @@ export type MutationUpdateMeArgs = {
   input: UpdateMeInput;
 };
 
+export type MutationUpdatePaymentStatusArgs = {
+  input: UpdatePaymentStatusInput;
+};
+
 export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
 };
@@ -388,8 +462,16 @@ export type MutationUpsertLocationArgs = {
   input: UpsertLocationInput;
 };
 
+export type MutationUpsertLocationReservationArgs = {
+  input: UpsertLocationReservationInput;
+};
+
 export type MutationUpsertLocationServiceArgs = {
   input: UpsertLocationServiceInput;
+};
+
+export type MutationUpsertPaymentArgs = {
+  input: UpsertPaymentInput;
 };
 
 export type MutationUpsertRoomArgs = {
@@ -401,17 +483,59 @@ export enum OrderBy {
   Desc = 'DESC',
 }
 
+export enum PaymentStatus {
+  Canceled = 'Canceled',
+  MissingLivingPrice = 'MissingLivingPrice',
+  Paid = 'Paid',
+  Unpaid = 'Unpaid',
+}
+
+export type Payment = {
+  createdAt: Scalars['DateTime'];
+  discount?: Maybe<Scalars['Float']>;
+  discountType?: Maybe<DiscountType>;
+  electricCounter?: Maybe<Scalars['Float']>;
+  id: Scalars['ID'];
+  location: Location;
+  locationId: Scalars['Float'];
+  locationReservation: LocationReservation;
+  locationReservationId: Scalars['Float'];
+  room: Room;
+  roomId: Scalars['Float'];
+  status: PaymentStatus;
+  totalPrice?: Maybe<Scalars['Float']>;
+  updatedAt: Scalars['DateTime'];
+  users?: Maybe<Array<User>>;
+  waterPrice?: Maybe<Scalars['Float']>;
+};
+
+export type PaymentListResponse = ListResponse & {
+  items: Array<Payment>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type PaymentResponse = IResponse & {
+  message?: Maybe<Scalars['String']>;
+  payment?: Maybe<Payment>;
+};
+
 export type Query = {
   getAmenities: AmenityListResponse;
-  getAmenity: AmenityResponse;
+  getAmenity: PaymentResponse;
   getAmenityType: AmenityTypeResponse;
   getAmenityTypes: AmenityTypeListResponse;
   getEquipment: EquipmentResponse;
   getEquipments: EquipmentListResponse;
   getLocation: LocationResponse;
+  getLocationReservation: LocationReservationResponse;
+  getLocationReservations: LocationReservationListResponse;
   getLocationService: LocationServiceResponse;
   getLocationServices: LocationServiceListResponse;
   getLocations: LocationListResponse;
+  getPayments: PaymentListResponse;
   getRoom: RoomResponse;
   getRooms: RoomListResponse;
   getUser: UserResponse;
@@ -447,6 +571,14 @@ export type QueryGetLocationArgs = {
   id: Scalars['Float'];
 };
 
+export type QueryGetLocationReservationArgs = {
+  id: Scalars['Float'];
+};
+
+export type QueryGetLocationReservationsArgs = {
+  input: GetLocationReservationsInput;
+};
+
 export type QueryGetLocationServiceArgs = {
   id: Scalars['Float'];
 };
@@ -457,6 +589,10 @@ export type QueryGetLocationServicesArgs = {
 
 export type QueryGetLocationsArgs = {
   input: GetLocationsInput;
+};
+
+export type QueryGetPaymentsArgs = {
+  input: GetPaymentsInput;
 };
 
 export type QueryGetRoomArgs = {
@@ -511,10 +647,11 @@ export type Room = {
   location?: Maybe<Location>;
   locationId: Scalars['Float'];
   name?: Maybe<Scalars['String']>;
+  payments?: Maybe<Array<Payment>>;
   status: RoomStatus;
   thumbnail?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
-  user?: Maybe<User>;
+  users?: Maybe<Array<User>>;
 };
 
 export type RoomListResponse = ListResponse & {
@@ -560,6 +697,11 @@ export type UpdateMeInput = {
   phoneNumber?: InputMaybe<Scalars['String']>;
 };
 
+export type UpdatePaymentStatusInput = {
+  id: Scalars['Float'];
+  status: PaymentStatus;
+};
+
 export type UpdateUserInput = {
   address?: InputMaybe<Scalars['String']>;
   avatar?: InputMaybe<Scalars['String']>;
@@ -601,6 +743,7 @@ export type UpsertLocationInput = {
   address?: InputMaybe<Scalars['String']>;
   contactInformations?: InputMaybe<Array<LocationContactInformationInput>>;
   description?: InputMaybe<Scalars['String']>;
+  electricCounterPrice?: InputMaybe<Scalars['Float']>;
   id?: InputMaybe<Scalars['Float']>;
   images?: InputMaybe<Scalars['String']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
@@ -612,11 +755,31 @@ export type UpsertLocationInput = {
   thumbnail?: InputMaybe<Scalars['String']>;
 };
 
+export type UpsertLocationReservationInput = {
+  createdById: Scalars['Float'];
+  id?: InputMaybe<Scalars['Float']>;
+  locationId: Scalars['Float'];
+  startDate: Scalars['DateTime'];
+  status?: InputMaybe<LocationReservationStatus>;
+};
+
 export type UpsertLocationServiceInput = {
   description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Float']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpsertPaymentInput = {
+  discount?: InputMaybe<Scalars['Float']>;
+  discountType?: InputMaybe<DiscountType>;
+  electricCounter?: InputMaybe<Scalars['Float']>;
+  id?: InputMaybe<Scalars['Float']>;
+  locationId: Scalars['Float'];
+  locationReservationId: Scalars['Float'];
+  roomId: Scalars['Float'];
+  status?: InputMaybe<PaymentStatus>;
+  waterPrice?: InputMaybe<Scalars['Float']>;
 };
 
 export type UpsertRoomInput = {
@@ -640,7 +803,9 @@ export type User = {
   isActive?: Maybe<Scalars['Boolean']>;
   location?: Maybe<Location>;
   locationId?: Maybe<Scalars['Float']>;
+  locationReservations?: Maybe<Array<LocationReservation>>;
   name: Scalars['String'];
+  payments?: Maybe<Array<Payment>>;
   phoneNumber?: Maybe<Scalars['String']>;
   role: UserRole;
   room?: Maybe<Room>;
@@ -1346,6 +1511,7 @@ export const GetLocationDocument = gql`
         income
         isActive
         createdAt
+        electricCounterPrice
         locationServices {
           id
           name
@@ -1508,6 +1674,7 @@ export const GetLocationsDocument = gql`
         income
         isActive
         createdAt
+        electricCounterPrice
         locationServices {
           id
           name
@@ -1959,6 +2126,7 @@ export type GetLocationQuery = {
       income: number;
       isActive: boolean;
       createdAt: any;
+      electricCounterPrice?: number | null;
       locationServices: Array<{
         id: string;
         name: string;
@@ -2019,6 +2187,7 @@ export type GetLocationsQuery = {
       income: number;
       isActive: boolean;
       createdAt: any;
+      electricCounterPrice?: number | null;
       locationServices: Array<{
         id: string;
         name: string;
