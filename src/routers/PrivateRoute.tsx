@@ -14,6 +14,7 @@ const Locations = loadable(import('#/pages/Locations'));
 const LocationDetail = loadable(import('#/pages/Locations/Detail'));
 const AmenityTypes = loadable(import('#/pages/AmenityType'));
 const LocationServices = loadable(import('#/pages/LocationServices'));
+const IncidentCategories = loadable(import('#/pages/IncidentCategories'));
 
 function PrivateRoute() {
   const navigate = useNavigate();
@@ -53,6 +54,15 @@ function PrivateRoute() {
         {
           index: true,
           element: <LocationServices />,
+        },
+      ],
+    },
+    {
+      path: '/incident-categories',
+      children: [
+        {
+          index: true,
+          element: <IncidentCategories />,
         },
       ],
     },

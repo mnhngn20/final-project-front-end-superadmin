@@ -12,6 +12,7 @@ import {
   DevicesOutlineSVG,
   HouseSVG,
   StarFilledSVG,
+  WarningFilledSVG,
 } from '#/assets/svgs';
 import { User } from '#/generated/schemas';
 import { MenuSidebarItem } from '../commons/MenuSideBarItem';
@@ -62,6 +63,11 @@ function PrivateLayout({
         icon: <Icon component={StarFilledSVG} />,
         name: 'Location Services',
         path: '/location-services',
+      },
+      {
+        icon: <Icon component={WarningFilledSVG} />,
+        name: 'Incident Categories',
+        path: '/incident-categories',
       },
     ],
   };

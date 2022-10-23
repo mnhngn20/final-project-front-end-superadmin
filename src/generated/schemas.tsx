@@ -29,19 +29,12 @@ export type Amenity = {
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  image?: Maybe<Scalars['String']>;
   isActive: Scalars['Boolean'];
   location: Location;
   locationId: Scalars['Float'];
   name: Scalars['String'];
   updatedAt: Scalars['DateTime'];
-};
-
-export type AmenityListResponse = ListResponse & {
-  items: Array<Amenity>;
-  message?: Maybe<Scalars['String']>;
-  page?: Maybe<Scalars['Float']>;
-  total?: Maybe<Scalars['Float']>;
-  totalPages?: Maybe<Scalars['Float']>;
 };
 
 export type AmenityResponse = IResponse & {
@@ -144,16 +137,6 @@ export type GetAccessTokenInput = {
   refreshToken: Scalars['String'];
 };
 
-export type GetAmenitiesInput = {
-  amenityTypeId?: InputMaybe<Scalars['Float']>;
-  isActive?: InputMaybe<Scalars['Boolean']>;
-  limit?: InputMaybe<Scalars['Float']>;
-  locationId?: InputMaybe<Scalars['Float']>;
-  name?: InputMaybe<Scalars['String']>;
-  orderBy?: InputMaybe<OrderBy>;
-  page?: InputMaybe<Scalars['Float']>;
-};
-
 export type GetAmenityTypesInput = {
   limit?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
@@ -169,6 +152,29 @@ export type GetEquipmentsInput = {
   orderBy?: InputMaybe<OrderBy>;
   page?: InputMaybe<Scalars['Float']>;
   roomId?: InputMaybe<Scalars['Float']>;
+};
+
+export type GetIncidentCategoriesInput = {
+  limit?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+};
+
+export type GetIncidentsInput = {
+  dueDate?: InputMaybe<Scalars['DateTime']>;
+  employeeId?: InputMaybe<Scalars['Float']>;
+  fromCustomer?: InputMaybe<Scalars['Boolean']>;
+  incidentCategoryId?: InputMaybe<Scalars['Float']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  priority?: InputMaybe<IncidentPriority>;
+  reporterId?: InputMaybe<Scalars['Float']>;
+  roomId?: InputMaybe<Scalars['Float']>;
+  status?: InputMaybe<IncidentStatus>;
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type GetLocationReservationsInput = {
@@ -192,6 +198,7 @@ export type GetLocationServicesInput = {
 
 export type GetLocationsInput = {
   address?: InputMaybe<Scalars['String']>;
+  distance?: InputMaybe<Scalars['Float']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
   lat?: InputMaybe<Scalars['Float']>;
   limit?: InputMaybe<Scalars['Float']>;
@@ -237,7 +244,82 @@ export type GetUsersInput = {
   roomId?: InputMaybe<Scalars['Float']>;
 };
 
+export enum IncidentPriority {
+  High = 'High',
+  Low = 'Low',
+  Medium = 'Medium',
+  Urgent = 'Urgent',
+}
+
+export enum IncidentStatus {
+  Cancel = 'Cancel',
+  Done = 'Done',
+  InProgress = 'InProgress',
+  ToDo = 'ToDo',
+}
+
 export type IResponse = {
+  message?: Maybe<Scalars['String']>;
+};
+
+export type Incident = {
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  dueDate?: Maybe<Scalars['DateTime']>;
+  employee?: Maybe<User>;
+  employeeId?: Maybe<Scalars['Float']>;
+  fromCustomer?: Maybe<Scalars['Boolean']>;
+  id: Scalars['ID'];
+  images?: Maybe<Scalars['String']>;
+  incidentCategory: IncidentCategory;
+  incidentCategoryId: Scalars['Float'];
+  location: Location;
+  locationId: Scalars['Float'];
+  priority?: Maybe<Scalars['String']>;
+  reportImages?: Maybe<Scalars['String']>;
+  reportMessage?: Maybe<Scalars['String']>;
+  reporter: User;
+  reporterId: Scalars['Float'];
+  room: IncidentCategory;
+  roomId: Scalars['Float'];
+  status?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type IncidentCategory = {
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  incidents?: Maybe<Array<Incident>>;
+  name: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type IncidentCategoryListResponse = ListResponse & {
+  items: Array<IncidentCategory>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type IncidentCategoryResponse = IResponse & {
+  incidentCategory?: Maybe<IncidentCategory>;
+  message?: Maybe<Scalars['String']>;
+};
+
+export type IncidentListResponse = ListResponse & {
+  items: Array<Incident>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type IncidentResponse = IResponse & {
+  incident?: Maybe<Incident>;
   message?: Maybe<Scalars['String']>;
 };
 
@@ -272,12 +354,14 @@ export type Location = {
   geoLocation?: Maybe<Scalars['JSONObject']>;
   id: Scalars['ID'];
   images?: Maybe<Scalars['String']>;
+  incidents: Array<Incident>;
   income: Scalars['Float'];
   isActive: Scalars['Boolean'];
   lat?: Maybe<Scalars['Float']>;
   locationReservations?: Maybe<Array<LocationReservation>>;
   locationServices: Array<LocationService>;
   long?: Maybe<Scalars['Float']>;
+  minPrice?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
   numOfFloor?: Maybe<Scalars['Float']>;
   payments?: Maybe<Array<Payment>>;
@@ -383,6 +467,8 @@ export type Mutation = {
   upsertAmenity: AmenityResponse;
   upsertAmenityType: AmenityTypeResponse;
   upsertEquipment: EquipmentResponse;
+  upsertIncident: IncidentResponse;
+  upsertIncidentCategory: IncidentCategoryResponse;
   upsertLocation: LocationResponse;
   upsertLocationReservation: LocationReservationResponse;
   upsertLocationService: LocationServiceResponse;
@@ -458,6 +544,14 @@ export type MutationUpsertEquipmentArgs = {
   input: UpsertEquipmentInput;
 };
 
+export type MutationUpsertIncidentArgs = {
+  input: UpsertIncidentInput;
+};
+
+export type MutationUpsertIncidentCategoryArgs = {
+  input: UpsertIncidentCategoriesInput;
+};
+
 export type MutationUpsertLocationArgs = {
   input: UpsertLocationInput;
 };
@@ -495,11 +589,13 @@ export type Payment = {
   discount?: Maybe<Scalars['Float']>;
   discountType?: Maybe<DiscountType>;
   electricCounter?: Maybe<Scalars['Float']>;
+  extraFee?: Maybe<Scalars['Float']>;
   id: Scalars['ID'];
   location: Location;
   locationId: Scalars['Float'];
   locationReservation: LocationReservation;
   locationReservationId: Scalars['Float'];
+  prePaidFee?: Maybe<Scalars['Float']>;
   room: Room;
   roomId: Scalars['Float'];
   status: PaymentStatus;
@@ -523,18 +619,22 @@ export type PaymentResponse = IResponse & {
 };
 
 export type Query = {
-  getAmenities: AmenityListResponse;
-  getAmenity: PaymentResponse;
+  getAmenities: IncidentListResponse;
+  getAmenity: AmenityResponse;
   getAmenityType: AmenityTypeResponse;
   getAmenityTypes: AmenityTypeListResponse;
   getEquipment: EquipmentResponse;
   getEquipments: EquipmentListResponse;
+  getIncident: IncidentResponse;
+  getIncidentCategories: IncidentCategoryListResponse;
+  getIncidentCategory: IncidentCategoryResponse;
   getLocation: LocationResponse;
   getLocationReservation: LocationReservationResponse;
   getLocationReservations: LocationReservationListResponse;
   getLocationService: LocationServiceResponse;
   getLocationServices: LocationServiceListResponse;
   getLocations: LocationListResponse;
+  getPayment: PaymentResponse;
   getPayments: PaymentListResponse;
   getRoom: RoomResponse;
   getRooms: RoomListResponse;
@@ -544,7 +644,7 @@ export type Query = {
 };
 
 export type QueryGetAmenitiesArgs = {
-  input: GetAmenitiesInput;
+  input: GetIncidentsInput;
 };
 
 export type QueryGetAmenityArgs = {
@@ -565,6 +665,18 @@ export type QueryGetEquipmentArgs = {
 
 export type QueryGetEquipmentsArgs = {
   input: GetEquipmentsInput;
+};
+
+export type QueryGetIncidentArgs = {
+  id: Scalars['Float'];
+};
+
+export type QueryGetIncidentCategoriesArgs = {
+  input: GetIncidentCategoriesInput;
+};
+
+export type QueryGetIncidentCategoryArgs = {
+  id: Scalars['Float'];
 };
 
 export type QueryGetLocationArgs = {
@@ -589,6 +701,10 @@ export type QueryGetLocationServicesArgs = {
 
 export type QueryGetLocationsArgs = {
   input: GetLocationsInput;
+};
+
+export type QueryGetPaymentArgs = {
+  id: Scalars['Float'];
 };
 
 export type QueryGetPaymentsArgs = {
@@ -638,12 +754,14 @@ export type ResetPasswordResponse = {
 
 export type Room = {
   basePrice: Scalars['Float'];
+  capacity?: Maybe<Scalars['Float']>;
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
   equipments?: Maybe<Array<Equipment>>;
   floor?: Maybe<Scalars['Float']>;
   id: Scalars['ID'];
   images?: Maybe<Scalars['String']>;
+  incidents?: Maybe<Array<Incident>>;
   location?: Maybe<Location>;
   locationId: Scalars['Float'];
   name?: Maybe<Scalars['String']>;
@@ -717,6 +835,7 @@ export type UpsertAmenityInput = {
   amenityTypeId: Scalars['Float'];
   description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Float']>;
+  image?: InputMaybe<Scalars['String']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
   locationId?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
@@ -739,6 +858,32 @@ export type UpsertEquipmentInput = {
   roomId: Scalars['Float'];
 };
 
+export type UpsertIncidentCategoriesInput = {
+  description?: InputMaybe<Scalars['String']>;
+  icon?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Float']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpsertIncidentInput = {
+  description?: InputMaybe<Scalars['String']>;
+  dueDate?: InputMaybe<Scalars['DateTime']>;
+  employeeId?: InputMaybe<Scalars['Float']>;
+  fromCustomer?: InputMaybe<Scalars['Boolean']>;
+  id?: InputMaybe<Scalars['Float']>;
+  images?: InputMaybe<Scalars['String']>;
+  incidentCategoryId: Scalars['Float'];
+  locationId: Scalars['Float'];
+  priority?: InputMaybe<IncidentPriority>;
+  reportImages?: InputMaybe<Scalars['String']>;
+  reportMessage?: InputMaybe<Scalars['String']>;
+  reporterId: Scalars['Float'];
+  roomId?: InputMaybe<Scalars['Float']>;
+  status?: InputMaybe<IncidentStatus>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
 export type UpsertLocationInput = {
   address?: InputMaybe<Scalars['String']>;
   contactInformations?: InputMaybe<Array<LocationContactInformationInput>>;
@@ -750,6 +895,7 @@ export type UpsertLocationInput = {
   lat?: InputMaybe<Scalars['Float']>;
   locationServiceIds?: InputMaybe<Array<Scalars['Float']>>;
   long?: InputMaybe<Scalars['Float']>;
+  minPrice?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
   numOfFloor: Scalars['Float'];
   thumbnail?: InputMaybe<Scalars['String']>;
@@ -774,9 +920,11 @@ export type UpsertPaymentInput = {
   discount?: InputMaybe<Scalars['Float']>;
   discountType?: InputMaybe<DiscountType>;
   electricCounter?: InputMaybe<Scalars['Float']>;
+  extraFee?: InputMaybe<Scalars['Float']>;
   id?: InputMaybe<Scalars['Float']>;
   locationId: Scalars['Float'];
   locationReservationId: Scalars['Float'];
+  prePaidFee?: InputMaybe<Scalars['Float']>;
   roomId: Scalars['Float'];
   status?: InputMaybe<PaymentStatus>;
   waterPrice?: InputMaybe<Scalars['Float']>;
@@ -784,6 +932,7 @@ export type UpsertPaymentInput = {
 
 export type UpsertRoomInput = {
   basePrice?: InputMaybe<Scalars['Float']>;
+  capacity?: InputMaybe<Scalars['Float']>;
   description?: InputMaybe<Scalars['String']>;
   floor?: InputMaybe<Scalars['Float']>;
   id?: InputMaybe<Scalars['Float']>;
@@ -798,6 +947,7 @@ export type User = {
   createdAt: Scalars['DateTime'];
   dateOfBirth: Scalars['DateTime'];
   email: Scalars['String'];
+  employeeIncidents?: Maybe<Array<Incident>>;
   id: Scalars['ID'];
   identityNumber?: Maybe<Scalars['String']>;
   isActive?: Maybe<Scalars['Boolean']>;
@@ -807,6 +957,7 @@ export type User = {
   name: Scalars['String'];
   payments?: Maybe<Array<Payment>>;
   phoneNumber?: Maybe<Scalars['String']>;
+  reportIncidents?: Maybe<Array<Incident>>;
   role: UserRole;
   room?: Maybe<Room>;
   roomId?: Maybe<Scalars['Float']>;
@@ -1193,6 +1344,59 @@ export type UpsertAmenityTypeMutationOptions = Apollo.BaseMutationOptions<
   UpsertAmenityTypeMutation,
   UpsertAmenityTypeMutationVariables
 >;
+export const UpsertIncidentCategoryDocument = gql`
+  mutation upsertIncidentCategory($input: UpsertIncidentCategoriesInput!) {
+    upsertIncidentCategory(input: $input) {
+      message
+      incidentCategory {
+        id
+      }
+    }
+  }
+`;
+export type UpsertIncidentCategoryMutationFn = Apollo.MutationFunction<
+  UpsertIncidentCategoryMutation,
+  UpsertIncidentCategoryMutationVariables
+>;
+
+/**
+ * __useUpsertIncidentCategoryMutation__
+ *
+ * To run a mutation, you first call `useUpsertIncidentCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertIncidentCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertIncidentCategoryMutation, { data, loading, error }] = useUpsertIncidentCategoryMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpsertIncidentCategoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertIncidentCategoryMutation,
+    UpsertIncidentCategoryMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertIncidentCategoryMutation,
+    UpsertIncidentCategoryMutationVariables
+  >(UpsertIncidentCategoryDocument, options);
+}
+export type UpsertIncidentCategoryMutationHookResult = ReturnType<
+  typeof useUpsertIncidentCategoryMutation
+>;
+export type UpsertIncidentCategoryMutationResult =
+  Apollo.MutationResult<UpsertIncidentCategoryMutation>;
+export type UpsertIncidentCategoryMutationOptions = Apollo.BaseMutationOptions<
+  UpsertIncidentCategoryMutation,
+  UpsertIncidentCategoryMutationVariables
+>;
 export const UpsertLocationDocument = gql`
   mutation upsertLocation($input: UpsertLocationInput!) {
     upsertLocation(input: $input) {
@@ -1493,6 +1697,79 @@ export function refetchGetAmenityTypesQuery(
   variables: GetAmenityTypesQueryVariables,
 ) {
   return { query: GetAmenityTypesDocument, variables: variables };
+}
+export const GetIncidentCategoriesDocument = gql`
+  query getIncidentCategories($input: GetIncidentCategoriesInput!) {
+    getIncidentCategories(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        name
+        description
+        icon
+        createdAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetIncidentCategoriesQuery__
+ *
+ * To run a query within a React component, call `useGetIncidentCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIncidentCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIncidentCategoriesQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetIncidentCategoriesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetIncidentCategoriesQuery,
+    GetIncidentCategoriesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetIncidentCategoriesQuery,
+    GetIncidentCategoriesQueryVariables
+  >(GetIncidentCategoriesDocument, options);
+}
+export function useGetIncidentCategoriesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetIncidentCategoriesQuery,
+    GetIncidentCategoriesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetIncidentCategoriesQuery,
+    GetIncidentCategoriesQueryVariables
+  >(GetIncidentCategoriesDocument, options);
+}
+export type GetIncidentCategoriesQueryHookResult = ReturnType<
+  typeof useGetIncidentCategoriesQuery
+>;
+export type GetIncidentCategoriesLazyQueryHookResult = ReturnType<
+  typeof useGetIncidentCategoriesLazyQuery
+>;
+export type GetIncidentCategoriesQueryResult = Apollo.QueryResult<
+  GetIncidentCategoriesQuery,
+  GetIncidentCategoriesQueryVariables
+>;
+export function refetchGetIncidentCategoriesQuery(
+  variables: GetIncidentCategoriesQueryVariables,
+) {
+  return { query: GetIncidentCategoriesDocument, variables: variables };
 }
 export const GetLocationDocument = gql`
   query getLocation($id: Float!) {
@@ -2040,6 +2317,17 @@ export type UpsertAmenityTypeMutation = {
   };
 };
 
+export type UpsertIncidentCategoryMutationVariables = Exact<{
+  input: UpsertIncidentCategoriesInput;
+}>;
+
+export type UpsertIncidentCategoryMutation = {
+  upsertIncidentCategory: {
+    message?: string | null;
+    incidentCategory?: { id: string } | null;
+  };
+};
+
 export type UpsertLocationMutationVariables = Exact<{
   input: UpsertLocationInput;
 }>;
@@ -2102,6 +2390,26 @@ export type GetAmenityTypesQuery = {
       isActive: boolean;
       createdAt: any;
       updatedAt: any;
+    }>;
+  };
+};
+
+export type GetIncidentCategoriesQueryVariables = Exact<{
+  input: GetIncidentCategoriesInput;
+}>;
+
+export type GetIncidentCategoriesQuery = {
+  getIncidentCategories: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      name: string;
+      description?: string | null;
+      icon?: string | null;
+      createdAt: any;
     }>;
   };
 };
