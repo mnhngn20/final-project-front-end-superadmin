@@ -105,6 +105,8 @@ function List() {
         title: 'Description',
         dataIndex: 'description',
         key: 'description',
+        width: 250,
+        render: (description?: string) => description ?? 'N/A',
       },
       {
         title: 'Status',
@@ -115,7 +117,9 @@ function List() {
             <CustomTag
               content={isActive ? 'Active' : 'Inactive'}
               className={
-                isActive ? 'bg-success text-[white]' : 'bg-warning text-[white]'
+                isActive
+                  ? 'bg-success text-[white]'
+                  : 'bg-grey-secondary-300 text-[white]'
               }
             />
           );
@@ -125,7 +129,15 @@ function List() {
         title: 'Created At',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: (createdAt: string) => formatDate(createdAt),
+        render: (createdAt?: string) =>
+          formatDate(createdAt, 'hh:mm A, DD MMMM YYYY'),
+      },
+      {
+        title: 'Updated At',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
+        render: (updatedAt?: string) =>
+          formatDate(updatedAt, 'hh:mm A, DD MMMM YYYY'),
       },
       {
         title: '',

@@ -13,6 +13,7 @@ import {
   NoteSVG,
   RoomSVG,
   SmsSVG,
+  SquareDollarOutlineSVG,
   StarSVG,
   UserOutlineSVG,
 } from '#/assets/svgs';
@@ -78,6 +79,11 @@ function SideContent({ location }: SideContentProps) {
             toolTip="Description"
             value={location?.description}
           />
+          <DetailItem
+            icon={SquareDollarOutlineSVG}
+            toolTip="Total Revenue"
+            value={(location?.totalRevenue ?? 0).toLocaleString()}
+          />
         </div>
         <div className="flex flex-col gap-4">
           <Typography className="text-lg font-bold">
@@ -101,7 +107,7 @@ function SideContent({ location }: SideContentProps) {
                 />
                 <DetailItem
                   icon={SmsSVG}
-                  toolTip="Created at"
+                  toolTip="Email"
                   value={contact?.email}
                 />
                 <DetailItem

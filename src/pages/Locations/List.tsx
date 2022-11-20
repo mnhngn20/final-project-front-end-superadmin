@@ -3,7 +3,6 @@ import { useState, useMemo } from 'react';
 import LocationForm from './Form';
 import Filters from './Filters';
 import {
-  OrderBy,
   useGetLocationsQuery,
   Location,
   useUpdateLocationStatusMutation,
@@ -19,6 +18,7 @@ import { AddSVG, EditSVG, EyeSVG } from '#/assets/svgs';
 import DefaultImage from '#/assets/images/default.png';
 import Image from '#/shared/components/commons/Image';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
+import { formatDate } from '#/shared/utils/date';
 
 export type GetLocationsFilter<T = string> = {
   name?: string;
@@ -42,7 +42,6 @@ function List() {
   const { data, loading, refetch } = useGetLocationsQuery({
     variables: {
       input: {
-        orderBy: OrderBy.Desc,
         page: currentPage,
         limit: pageSize,
         ...filters,
@@ -139,19 +138,6 @@ function List() {
         key: 'name',
       },
       {
-        title: 'Electric Counter Price',
-        dataIndex: 'electricCounterPrice',
-        key: 'electricCounterPrice',
-        render(electricCounterPrice: number) {
-          return electricCounterPrice.toLocaleString();
-        },
-      },
-      {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
-      },
-      {
         title: 'Status',
         dataIndex: 'isActive',
         key: 'isActive',
@@ -170,6 +156,60 @@ function List() {
             }
           />
         ),
+      },
+      {
+        title: 'Electric Counter Price',
+        dataIndex: 'electricCounterPrice',
+        key: 'electricCounterPrice',
+        render(electricCounterPrice: number) {
+          return `${electricCounterPrice.toLocaleString()} VND/counter`;
+        },
+      },
+      {
+        title: 'Total Floor',
+        dataIndex: 'numOfFloor',
+        key: 'numOfFloor',
+        render: (numOfFloor?: number) => numOfFloor ?? 1,
+      },
+      {
+        title: 'Total Revenue',
+        dataIndex: 'totalRevenue',
+        key: 'totalRevenue',
+        render: (totalRevenue?: number) =>
+          `${(totalRevenue ?? 0)?.toLocaleString()} VND`,
+      },
+      {
+        title: 'Room Average Price',
+        dataIndex: 'minPrice',
+        key: 'minPrice',
+        render: (minPrice?: number) =>
+          `${(minPrice ?? 0)?.toLocaleString()} VND`,
+      },
+      {
+        title: 'Description',
+        dataIndex: 'description',
+        key: 'description',
+        width: 250,
+        render: (description?: string) => description ?? 'N/A',
+      },
+      {
+        title: 'Address',
+        dataIndex: 'address',
+        key: 'address',
+        width: 250,
+        render: (address?: string) => address ?? 'N/A',
+      },
+      {
+        title: 'Created Date',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: (date: Date) => formatDate(date, 'hh:mm A, DD MMMM YYYY'),
+      },
+      {
+        title: 'Updated Date',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
+        render: (date: Date) => formatDate(date, 'hh:mm A, DD MMMM YYYY'),
       },
       {
         title: '',

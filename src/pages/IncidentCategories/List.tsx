@@ -19,6 +19,7 @@ import Image from '#/shared/components/commons/Image';
 import DefaultImage from '#/assets/images/default.png';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 import { formatDate } from '#/shared/utils/date';
+import CustomTag from '#/shared/components/commons/CustomTag';
 
 export type GetIncidentCategoriesFilter = {
   name?: string;
@@ -117,12 +118,39 @@ function List() {
         title: 'Description',
         dataIndex: 'description',
         key: 'description',
+        width: 250,
+        render: (description?: string) => description ?? 'N/A',
+      },
+      {
+        title: 'Status',
+        dataIndex: 'isActive',
+        key: 'isActive',
+        render(isActive: boolean) {
+          return (
+            <CustomTag
+              content={isActive ? 'Active' : 'Inactive'}
+              className={
+                isActive
+                  ? 'bg-success text-[white]'
+                  : 'bg-grey-secondary-300 text-[white]'
+              }
+            />
+          );
+        },
       },
       {
         title: 'Created At',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: (createdAt: string) => formatDate(createdAt),
+        render: (createdAt?: string) =>
+          formatDate(createdAt, 'hh:mm A, DD MMMM YYYY'),
+      },
+      {
+        title: 'Updated At',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
+        render: (updatedAt?: string) =>
+          formatDate(updatedAt, 'hh:mm A, DD MMMM YYYY'),
       },
       {
         title: '',

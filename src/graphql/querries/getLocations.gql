@@ -30,6 +30,7 @@ query getLocations($input: GetLocationsInput!) {
         phoneNumber
         email
       }
+      updatedAt
     }
   }
 }

@@ -4,13 +4,13 @@ import {
   useUpsertLocationMutation,
 } from '#/generated/schemas';
 import { FormModal } from '#/shared/components/commons/FormModal';
-import ImageCarousel from '#/shared/components/commons/ImageCarousel';
 import DetailLayout from '#/shared/components/layout/DetailLayout';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { Coordinates } from '#/shared/utils/type';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import LocationForm from '../Form';
+import MainContent from './MainContent';
 import SideContent from './SideContent';
 
 function Detail() {
@@ -66,12 +66,8 @@ function Detail() {
       <DetailLayout
         loading={loading}
         title="Location Detail"
+        sideContent={<MainContent location={location ?? {}} />}
         mainContent={<SideContent location={location ?? {}} />}
-        sideContent={
-          <ImageCarousel
-            images={location?.images ? location?.images?.split(',') : []}
-          />
-        }
         onEdit={() => setEditModalVisible(true)}
       />
       <FormModal<

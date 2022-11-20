@@ -86,10 +86,11 @@ function List() {
     onError: showError,
   });
 
-  const onFilter = ({ name, email, isActive }: GetUsersFilter) => {
+  const onFilter = ({ name, email, isActive, locationId }: GetUsersFilter) => {
     const newFilter = {
       ...(name && { name }),
       ...(email && { email }),
+      ...(locationId && { locationId: Number(locationId) }),
       ...(isActive && { isActive: isActive === 'true' }),
     };
     setCurrentPage(1);
@@ -152,7 +153,14 @@ function List() {
         title: 'Full Name',
         dataIndex: 'name',
         key: 'name',
-        render: (_, record: DeepPartial<User>) => formatDisplayUser(record),
+        render: (_: unknown, record: DeepPartial<User>) =>
+          formatDisplayUser(record),
+      },
+      {
+        title: 'Location Name',
+        dataIndex: ['location', 'name'],
+        key: 'locationName',
+        render: (locationName?: string) => locationName ?? 'N/A',
       },
       {
         title: 'Date of Birth',
@@ -164,11 +172,13 @@ function List() {
         title: 'Phone',
         dataIndex: 'phoneNumber',
         key: 'phoneNumber',
+        render: (phoneNumber?: string) => phoneNumber ?? 'N/A',
       },
       {
         title: 'Card ID',
         dataIndex: 'identityNumber',
         key: 'identityNumber',
+        render: (identityNumber?: string) => identityNumber ?? 'N/A',
       },
       {
         title: 'Role',
@@ -195,6 +205,20 @@ function List() {
             }
           />
         ),
+      },
+      {
+        title: 'Created Date',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: (createdAt?: string) =>
+          dayjs(createdAt).format('hh:mm A, DD MMM YYYY'),
+      },
+      {
+        title: 'Updated Date',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
+        render: (updatedAt?: string) =>
+          dayjs(updatedAt).format('hh:mm A, DD MMM YYYY'),
       },
       {
         title: '',
@@ -231,7 +255,7 @@ function List() {
       <Filters onFilter={onFilter} />
       <div className="rounded-xl bg-[white] px-4">
         <div className="flex items-center justify-between py-4">
-          <Typography className="text-xl font-semibold">User List</Typography>
+          <Typography className="text-xl font-semibold">Admin List</Typography>
           <Button
             type="primary"
             className="w-min"
@@ -265,7 +289,7 @@ function List() {
       <FormModal<UpdateUserInput>
         loading={createLoading || updateLoading}
         onSubmit={onSubmit}
-        name="User"
+        name="Admin"
         onClose={clearSelectedItem}
         selectedItem={selectedItem}
         initialValues={selectedItem}

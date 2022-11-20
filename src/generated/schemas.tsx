@@ -37,6 +37,14 @@ export type Amenity = {
   updatedAt: Scalars['DateTime'];
 };
 
+export type AmenityListResponse = ListResponse & {
+  items: Array<Amenity>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
 export type AmenityResponse = IResponse & {
   amenity?: Maybe<Amenity>;
   message?: Maybe<Scalars['String']>;
@@ -66,6 +74,11 @@ export type AmenityTypeResponse = IResponse & {
   message?: Maybe<Scalars['String']>;
 };
 
+export type ChangeLocationReservationStatusInput = {
+  locationReservationId: Scalars['Float'];
+  status: Scalars['String'];
+};
+
 export type ChangePasswordInput = {
   oldPassword: Scalars['String'];
   password: Scalars['String'];
@@ -86,6 +99,17 @@ export type ContactInformation = {
   name?: Maybe<Scalars['String']>;
   phoneNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
+};
+
+export type CreateInstallationInput = {
+  firebaseToken: Scalars['String'];
+  userId: Scalars['Float'];
+};
+
+export type CreateStripeCheckoutInput = {
+  cancelUrl: Scalars['String'];
+  paymentId: Scalars['Float'];
+  successUrl: Scalars['String'];
 };
 
 export type CreateUserInput = {
@@ -137,7 +161,18 @@ export type GetAccessTokenInput = {
   refreshToken: Scalars['String'];
 };
 
+export type GetAmenitiesInput = {
+  amenityTypeId?: InputMaybe<Scalars['Float']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+};
+
 export type GetAmenityTypesInput = {
+  isActive?: InputMaybe<Scalars['Boolean']>;
   limit?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
   orderBy?: InputMaybe<OrderBy>;
@@ -204,12 +239,30 @@ export type GetLocationsInput = {
   limit?: InputMaybe<Scalars['Float']>;
   locationServiceIds?: InputMaybe<Array<Scalars['Float']>>;
   long?: InputMaybe<Scalars['Float']>;
+  maxPrice?: InputMaybe<Scalars['Float']>;
+  minPrice?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
-  orderBy?: InputMaybe<OrderBy>;
+  orderBy?: InputMaybe<Scalars['String']>;
   page?: InputMaybe<Scalars['Float']>;
 };
 
+export type GetMyNotificationStatusResponse = {
+  message: Scalars['String'];
+  total: Scalars['Float'];
+};
+
+export type GetNotificationsInput = {
+  isAdminOnly?: InputMaybe<Scalars['Boolean']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  type?: InputMaybe<NotificationType>;
+  userId?: InputMaybe<Scalars['Float']>;
+};
+
 export type GetPaymentsInput = {
+  floor?: InputMaybe<Scalars['Float']>;
   limit?: InputMaybe<Scalars['Float']>;
   locationId?: InputMaybe<Scalars['Float']>;
   locationReservationId?: InputMaybe<Scalars['Float']>;
@@ -221,6 +274,7 @@ export type GetPaymentsInput = {
 };
 
 export type GetRoomsInput = {
+  capacity?: InputMaybe<Scalars['Float']>;
   floor?: InputMaybe<Scalars['Float']>;
   limit?: InputMaybe<Scalars['Float']>;
   locationId?: InputMaybe<Scalars['Float']>;
@@ -255,6 +309,7 @@ export enum IncidentStatus {
   Cancel = 'Cancel',
   Done = 'Done',
   InProgress = 'InProgress',
+  Overdue = 'Overdue',
   ToDo = 'ToDo',
 }
 
@@ -263,6 +318,7 @@ export type IResponse = {
 };
 
 export type Incident = {
+  completedDate?: Maybe<Scalars['DateTime']>;
   createdAt: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
   dueDate?: Maybe<Scalars['DateTime']>;
@@ -275,14 +331,14 @@ export type Incident = {
   incidentCategoryId: Scalars['Float'];
   location: Location;
   locationId: Scalars['Float'];
-  priority?: Maybe<Scalars['String']>;
+  priority?: Maybe<IncidentPriority>;
   reportImages?: Maybe<Scalars['String']>;
   reportMessage?: Maybe<Scalars['String']>;
   reporter: User;
   reporterId: Scalars['Float'];
-  room: IncidentCategory;
+  room: Room;
   roomId: Scalars['Float'];
-  status?: Maybe<Scalars['String']>;
+  status?: Maybe<IncidentStatus>;
   title: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
@@ -324,6 +380,7 @@ export type IncidentResponse = IResponse & {
 };
 
 export enum LocationReservationStatus {
+  Completed = 'Completed',
   Draft = 'Draft',
   Published = 'Published',
 }
@@ -363,10 +420,13 @@ export type Location = {
   long?: Maybe<Scalars['Float']>;
   minPrice?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
+  notification: Array<Notification>;
   numOfFloor?: Maybe<Scalars['Float']>;
   payments?: Maybe<Array<Payment>>;
   rooms?: Maybe<Array<Room>>;
+  stripeAccountId?: Maybe<Scalars['String']>;
   thumbnail?: Maybe<Scalars['String']>;
+  totalRevenue?: Maybe<Scalars['Float']>;
   updatedAt: Scalars['DateTime'];
   users?: Maybe<Array<User>>;
 };
@@ -450,16 +510,24 @@ export type LoginResponse = IResponse & {
 };
 
 export type Mutation = {
+  authorizeCode: Scalars['String'];
+  changeLocationReservationStatus: LocationReservationResponse;
   changePassword: Scalars['String'];
   changeUserStatus: Scalars['String'];
+  createInstallation: Scalars['String'];
+  createStripeCheckoutSession: StripeResponse;
   createUser: UserResponse;
+  deleteLocationReservation: Scalars['String'];
   getAccessToken: LoginResponse;
   login: LoginResponse;
+  manuallyPay: PaymentResponse;
+  readNotification: Scalars['String'];
   register: UserResponse;
   resetPassword: ResetPasswordResponse;
   resetPasswordConfirm: ResetPasswordResponse;
   updateAmenityStatus: AmenityResponse;
   updateEquipmentStatus: EquipmentResponse;
+  updateIncidentForEmployee: IncidentResponse;
   updateLocationStatus: LocationResponse;
   updateMe: UserResponse;
   updatePaymentStatus: PaymentResponse;
@@ -476,6 +544,14 @@ export type Mutation = {
   upsertRoom: RoomResponse;
 };
 
+export type MutationAuthorizeCodeArgs = {
+  code: Scalars['String'];
+};
+
+export type MutationChangeLocationReservationStatusArgs = {
+  input: ChangeLocationReservationStatusInput;
+};
+
 export type MutationChangePasswordArgs = {
   input: ChangePasswordInput;
 };
@@ -484,8 +560,20 @@ export type MutationChangeUserStatusArgs = {
   input: ChangeUserStatusInput;
 };
 
+export type MutationCreateInstallationArgs = {
+  input: CreateInstallationInput;
+};
+
+export type MutationCreateStripeCheckoutSessionArgs = {
+  input: CreateStripeCheckoutInput;
+};
+
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
+};
+
+export type MutationDeleteLocationReservationArgs = {
+  id: Scalars['Float'];
 };
 
 export type MutationGetAccessTokenArgs = {
@@ -494,6 +582,14 @@ export type MutationGetAccessTokenArgs = {
 
 export type MutationLoginArgs = {
   input: RegisterLoginInput;
+};
+
+export type MutationManuallyPayArgs = {
+  id: Scalars['Float'];
+};
+
+export type MutationReadNotificationArgs = {
+  id: Scalars['Float'];
 };
 
 export type MutationRegisterArgs = {
@@ -514,6 +610,10 @@ export type MutationUpdateAmenityStatusArgs = {
 
 export type MutationUpdateEquipmentStatusArgs = {
   input: UpdateEquipmentStatusInput;
+};
+
+export type MutationUpdateIncidentForEmployeeArgs = {
+  input: UpdateIncidentForEmployeeInput;
 };
 
 export type MutationUpdateLocationStatusArgs = {
@@ -572,6 +672,38 @@ export type MutationUpsertRoomArgs = {
   input: UpsertRoomInput;
 };
 
+export enum NotificationType {
+  Announcement = 'Announcement',
+  Incident = 'Incident',
+  Other = 'Other',
+  Payment = 'Payment',
+}
+
+export type Notification = {
+  content?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  dataId?: Maybe<Scalars['Float']>;
+  id: Scalars['ID'];
+  image?: Maybe<Scalars['String']>;
+  isAdminOnly?: Maybe<Scalars['Boolean']>;
+  isRead?: Maybe<Scalars['Boolean']>;
+  location?: Maybe<Location>;
+  locationId?: Maybe<Scalars['Float']>;
+  title?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  user: User;
+  userId: Scalars['Float'];
+};
+
+export type NotificationListResponse = ListResponse & {
+  items: Array<Notification>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
 export enum OrderBy {
   Asc = 'ASC',
   Desc = 'DESC',
@@ -619,7 +751,7 @@ export type PaymentResponse = IResponse & {
 };
 
 export type Query = {
-  getAmenities: IncidentListResponse;
+  getAmenities: AmenityListResponse;
   getAmenity: AmenityResponse;
   getAmenityType: AmenityTypeResponse;
   getAmenityTypes: AmenityTypeListResponse;
@@ -628,12 +760,15 @@ export type Query = {
   getIncident: IncidentResponse;
   getIncidentCategories: IncidentCategoryListResponse;
   getIncidentCategory: IncidentCategoryResponse;
+  getIncidents: IncidentListResponse;
   getLocation: LocationResponse;
   getLocationReservation: LocationReservationResponse;
   getLocationReservations: LocationReservationListResponse;
   getLocationService: LocationServiceResponse;
   getLocationServices: LocationServiceListResponse;
   getLocations: LocationListResponse;
+  getMyNotificationStatus: GetMyNotificationStatusResponse;
+  getNotifications: NotificationListResponse;
   getPayment: PaymentResponse;
   getPayments: PaymentListResponse;
   getRoom: RoomResponse;
@@ -644,7 +779,7 @@ export type Query = {
 };
 
 export type QueryGetAmenitiesArgs = {
-  input: GetIncidentsInput;
+  input: GetAmenitiesInput;
 };
 
 export type QueryGetAmenityArgs = {
@@ -679,6 +814,10 @@ export type QueryGetIncidentCategoryArgs = {
   id: Scalars['Float'];
 };
 
+export type QueryGetIncidentsArgs = {
+  input: GetIncidentsInput;
+};
+
 export type QueryGetLocationArgs = {
   id: Scalars['Float'];
 };
@@ -701,6 +840,10 @@ export type QueryGetLocationServicesArgs = {
 
 export type QueryGetLocationsArgs = {
   input: GetLocationsInput;
+};
+
+export type QueryGetNotificationsArgs = {
+  input: GetNotificationsInput;
 };
 
 export type QueryGetPaymentArgs = {
@@ -785,6 +928,11 @@ export type RoomResponse = IResponse & {
   room?: Maybe<Room>;
 };
 
+export type StripeResponse = IResponse & {
+  message?: Maybe<Scalars['String']>;
+  url: Scalars['String'];
+};
+
 export enum UserRole {
   Admin = 'Admin',
   Customer = 'Customer',
@@ -799,6 +947,15 @@ export type UpdateAmenityStatusInput = {
 export type UpdateEquipmentStatusInput = {
   id: Scalars['Float'];
   isActive?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type UpdateIncidentForEmployeeInput = {
+  employeeId?: InputMaybe<Scalars['Float']>;
+  id: Scalars['Float'];
+  priority?: InputMaybe<Scalars['String']>;
+  reportImages?: InputMaybe<Scalars['String']>;
+  reportMessage?: InputMaybe<Scalars['String']>;
+  status: IncidentStatus;
 };
 
 export type UpdateLocationStatusInput = {
@@ -927,6 +1084,7 @@ export type UpsertPaymentInput = {
   prePaidFee?: InputMaybe<Scalars['Float']>;
   roomId: Scalars['Float'];
   status?: InputMaybe<PaymentStatus>;
+  userIds?: InputMaybe<Array<Scalars['Float']>>;
   waterPrice?: InputMaybe<Scalars['Float']>;
 };
 
@@ -948,6 +1106,7 @@ export type User = {
   dateOfBirth: Scalars['DateTime'];
   email: Scalars['String'];
   employeeIncidents?: Maybe<Array<Incident>>;
+  firebaseToken?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   identityNumber?: Maybe<Scalars['String']>;
   isActive?: Maybe<Scalars['Boolean']>;
@@ -955,6 +1114,7 @@ export type User = {
   locationId?: Maybe<Scalars['Float']>;
   locationReservations?: Maybe<Array<LocationReservation>>;
   name: Scalars['String'];
+  notification?: Maybe<Array<Notification>>;
   payments?: Maybe<Array<Payment>>;
   phoneNumber?: Maybe<Scalars['String']>;
   reportIncidents?: Maybe<Array<Incident>>;
@@ -1711,6 +1871,7 @@ export const GetIncidentCategoriesDocument = gql`
         description
         icon
         createdAt
+        updatedAt
       }
     }
   }
@@ -1857,6 +2018,92 @@ export type GetLocationQueryResult = Apollo.QueryResult<
 export function refetchGetLocationQuery(variables: GetLocationQueryVariables) {
   return { query: GetLocationDocument, variables: variables };
 }
+export const GetLocationReservationsDocument = gql`
+  query getLocationReservations($input: GetLocationReservationsInput!) {
+    getLocationReservations(input: $input) {
+      page
+      total
+      totalPages
+      message
+      items {
+        id
+        totalCalculatedPrice
+        status
+        totalReceivedPrice
+        startDate
+        createdById
+        createdBy {
+          name
+          avatar
+          email
+        }
+        locationId
+        location {
+          name
+          images
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetLocationReservationsQuery__
+ *
+ * To run a query within a React component, call `useGetLocationReservationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLocationReservationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLocationReservationsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetLocationReservationsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetLocationReservationsQuery,
+    GetLocationReservationsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetLocationReservationsQuery,
+    GetLocationReservationsQueryVariables
+  >(GetLocationReservationsDocument, options);
+}
+export function useGetLocationReservationsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetLocationReservationsQuery,
+    GetLocationReservationsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetLocationReservationsQuery,
+    GetLocationReservationsQueryVariables
+  >(GetLocationReservationsDocument, options);
+}
+export type GetLocationReservationsQueryHookResult = ReturnType<
+  typeof useGetLocationReservationsQuery
+>;
+export type GetLocationReservationsLazyQueryHookResult = ReturnType<
+  typeof useGetLocationReservationsLazyQuery
+>;
+export type GetLocationReservationsQueryResult = Apollo.QueryResult<
+  GetLocationReservationsQuery,
+  GetLocationReservationsQueryVariables
+>;
+export function refetchGetLocationReservationsQuery(
+  variables: GetLocationReservationsQueryVariables,
+) {
+  return { query: GetLocationReservationsDocument, variables: variables };
+}
 export const GetLocationServicesDocument = gql`
   query getLocationServices($input: GetLocationServicesInput!) {
     getLocationServices(input: $input) {
@@ -1964,6 +2211,7 @@ export const GetLocationsDocument = gql`
           phoneNumber
           email
         }
+        updatedAt
       }
     }
   }
@@ -2120,6 +2368,7 @@ export const GetUsersDocument = gql`
         locationId
         location {
           id
+          name
         }
         room {
           name
@@ -2410,6 +2659,7 @@ export type GetIncidentCategoriesQuery = {
       description?: string | null;
       icon?: string | null;
       createdAt: any;
+      updatedAt: any;
     }>;
   };
 };
@@ -2448,6 +2698,32 @@ export type GetLocationQuery = {
         email?: string | null;
       }> | null;
     } | null;
+  };
+};
+
+export type GetLocationReservationsQueryVariables = Exact<{
+  input: GetLocationReservationsInput;
+}>;
+
+export type GetLocationReservationsQuery = {
+  getLocationReservations: {
+    page?: number | null;
+    total?: number | null;
+    totalPages?: number | null;
+    message?: string | null;
+    items: Array<{
+      id: string;
+      totalCalculatedPrice: number;
+      status: string;
+      totalReceivedPrice: number;
+      startDate: any;
+      createdById: number;
+      locationId: number;
+      createdAt: any;
+      updatedAt: any;
+      createdBy: { name: string; avatar?: string | null; email: string };
+      location: { name: string; images?: string | null };
+    }>;
   };
 };
 
@@ -2496,6 +2772,7 @@ export type GetLocationsQuery = {
       isActive: boolean;
       createdAt: any;
       electricCounterPrice?: number | null;
+      updatedAt: any;
       locationServices: Array<{
         id: string;
         name: string;
@@ -2563,7 +2840,7 @@ export type GetUsersQuery = {
       locationId?: number | null;
       roomId?: number | null;
       createdAt: any;
-      location?: { id: string } | null;
+      location?: { id: string; name: string } | null;
       room?: { name?: string | null } | null;
     }>;
   };

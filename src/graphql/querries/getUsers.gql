@@ -18,6 +18,7 @@ query getUsers($input: GetUsersInput!) {
       locationId
       location {
         id
+        name
       }
       room {
         name

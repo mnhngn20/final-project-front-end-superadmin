@@ -8,7 +8,6 @@ import RightContentHeader from './RightContentHeader';
 import { appConfig } from '#/configs/config';
 import {
   CustomerSVG,
-  DashboardSVG,
   DevicesOutlineSVG,
   HouseSVG,
   StarFilledSVG,
@@ -39,11 +38,6 @@ function PrivateLayout({
 
   const ROUTES: Route = {
     routes: [
-      {
-        icon: <Icon component={DashboardSVG} />,
-        name: 'Dashboard',
-        path: '/',
-      },
       {
         icon: <Icon component={CustomerSVG} />,
         name: 'Users',

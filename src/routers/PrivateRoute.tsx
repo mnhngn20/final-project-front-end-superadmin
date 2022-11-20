@@ -6,7 +6,6 @@ import { clearToken } from '#/shared/utils/token';
 import { userVar } from '#/graphql/cache';
 import { showError } from '#/shared/utils/notification';
 
-const Dashboard = loadable(import('#/pages/Dashboard'));
 const Users = loadable(import('#/pages/Users'));
 const UserDetail = loadable(import('#/pages/Users/Detail'));
 const Profile = loadable(import('#/pages/Profile'));
@@ -82,7 +81,7 @@ function PrivateRoute() {
         { path: ':id', element: <LocationDetail /> },
       ],
     },
-    { element: <Dashboard />, path: '/' },
+    { element: <Users />, path: '/' },
   ]);
 
   return (

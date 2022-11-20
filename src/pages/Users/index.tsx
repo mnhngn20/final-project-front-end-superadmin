@@ -3,7 +3,7 @@ import List from './List';
 
 export default function Users() {
   return (
-    <PageLayout title="Manage Users">
+    <PageLayout title="Manage Admins">
       <List />
     </PageLayout>
   );
