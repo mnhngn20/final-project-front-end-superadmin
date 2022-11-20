@@ -517,7 +517,10 @@ export type Mutation = {
   createInstallation: Scalars['String'];
   createStripeCheckoutSession: StripeResponse;
   createUser: UserResponse;
+  deleteAmenity: Scalars['String'];
+  deleteEquipment: Scalars['String'];
   deleteLocationReservation: Scalars['String'];
+  deleteRoom: Scalars['String'];
   getAccessToken: LoginResponse;
   login: LoginResponse;
   manuallyPay: PaymentResponse;
@@ -572,7 +575,19 @@ export type MutationCreateUserArgs = {
   input: CreateUserInput;
 };
 
+export type MutationDeleteAmenityArgs = {
+  id: Scalars['Float'];
+};
+
+export type MutationDeleteEquipmentArgs = {
+  id: Scalars['Float'];
+};
+
 export type MutationDeleteLocationReservationArgs = {
+  id: Scalars['Float'];
+};
+
+export type MutationDeleteRoomArgs = {
   id: Scalars['Float'];
 };
 
@@ -2033,6 +2048,7 @@ export const GetLocationReservationsDocument = gql`
         startDate
         createdById
         createdBy {
+          id
           name
           avatar
           email
@@ -2721,7 +2737,12 @@ export type GetLocationReservationsQuery = {
       locationId: number;
       createdAt: any;
       updatedAt: any;
-      createdBy: { name: string; avatar?: string | null; email: string };
+      createdBy: {
+        id: string;
+        name: string;
+        avatar?: string | null;
+        email: string;
+      };
       location: { name: string; images?: string | null };
     }>;
   };

@@ -10,11 +10,11 @@ import {
   Typography,
 } from 'antd';
 import { Location } from '#/generated/schemas';
-import AddressSelector from '#/shared/components/selectors/AddressSelector';
 import UploadImages from '#/shared/components/commons/UploadImages';
 import UploadImage from '#/shared/components/commons/UploadImage';
 import { AddSVG } from '#/assets/svgs';
 import { CloseOutlined } from '@ant-design/icons';
+import AddressSelector from '#/shared/components/selectors/AddressSelector';
 import LocationServiceSelector from '#/shared/components/selectors/LocationServiceSeletor';
 
 interface Props {
@@ -43,6 +43,7 @@ function LocationForm({ initialValues }: Props) {
           <Input placeholder="Enter location name" />
         </Form.Item>
       </Col>
+
       <Col span={12}>
         <Form.Item
           name="numOfFloor"
@@ -62,18 +63,6 @@ function LocationForm({ initialValues }: Props) {
       </Col>
       <Col span={12}>
         <Form.Item
-          name="electricCounterPrice"
-          label="Electric Counter Price"
-          rules={[{ required: true }]}
-        >
-          <InputNumber
-            placeholder="Enter electric counter price"
-            className="w-full"
-          />
-        </Form.Item>
-      </Col>
-      <Col span={12}>
-        <Form.Item
           name="address"
           label="Location Address"
           rules={[{ required: true }]}
@@ -82,6 +71,23 @@ function LocationForm({ initialValues }: Props) {
         </Form.Item>
       </Col>
       <Col span={12}>
+        <Form.Item
+          name="minPrice"
+          label="Location Average Price"
+          rules={[{ required: true }]}
+        >
+          <InputNumber
+            placeholder="Enter location average price"
+            className="w-full"
+            formatter={value =>
+              !value
+                ? ''
+                : `${Number(value)?.toLocaleString()?.toString() ?? ''} VND`
+            }
+          />
+        </Form.Item>
+      </Col>
+      <Col span={24}>
         <Form.Item name="locationServiceIds" label="Services">
           <LocationServiceSelector
             mode="multiple"
@@ -91,6 +97,11 @@ function LocationForm({ initialValues }: Props) {
                 ? [...initialValues?.locationServices]
                 : []
             }
+            variables={{
+              input: {
+                isActive: true,
+              },
+            }}
           />
         </Form.Item>
       </Col>
