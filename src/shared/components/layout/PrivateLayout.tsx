@@ -16,6 +16,7 @@ import {
 import { User } from '#/generated/schemas';
 import { MenuSidebarItem } from '../commons/MenuSideBarItem';
 import { DeepPartial } from '#/shared/utils/type';
+import Logo from '#/assets/images/logo.png';
 
 interface Props {
   logout: () => void;
@@ -70,7 +71,7 @@ function PrivateLayout({
     <div className="h-screen">
       <ProLayout
         route={ROUTES}
-        logo={appConfig.logo}
+        logo={isCollapsed ? Logo : appConfig.logo}
         location={{
           pathname,
         }}

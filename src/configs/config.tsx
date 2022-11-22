@@ -1,4 +1,4 @@
-import Logo from '#/assets/images/logo.png';
+import LogoFull from '#/assets/images/logo-full.png';
 
 export const formConfig = {
   requiredMark: true,
@@ -19,7 +19,7 @@ export const formConfig = {
 };
 
 export const appConfig = {
-  logo: Logo,
-  name: 'CanHo Super Admin',
+  logo: LogoFull,
+  name: 'GoodPlace. Super Admin',
   title: '',
 };
