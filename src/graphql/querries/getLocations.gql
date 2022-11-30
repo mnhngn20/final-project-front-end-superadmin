@@ -16,6 +16,7 @@ query getLocations($input: GetLocationsInput!) {
       numOfFloor
       income
       isActive
+      minPrice
       createdAt
       electricCounterPrice
       locationServices {

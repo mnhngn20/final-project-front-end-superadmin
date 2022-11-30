@@ -19,6 +19,7 @@ import DefaultImage from '#/assets/images/default.png';
 import Image from '#/shared/components/commons/Image';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 import { formatDate } from '#/shared/utils/date';
+import EllipsisText from '#/shared/components/commons/EllipsisText';
 
 export type GetLocationsFilter<T = string> = {
   name?: string;
@@ -190,7 +191,9 @@ function List() {
         dataIndex: 'description',
         key: 'description',
         width: 250,
-        render: (description?: string) => description ?? 'N/A',
+        render: (description?: string) => (
+          <EllipsisText text={description ?? 'N/A'} />
+        ),
       },
       {
         title: 'Address',

@@ -970,7 +970,7 @@ export type UpdateIncidentForEmployeeInput = {
   priority?: InputMaybe<Scalars['String']>;
   reportImages?: InputMaybe<Scalars['String']>;
   reportMessage?: InputMaybe<Scalars['String']>;
-  status: IncidentStatus;
+  status?: InputMaybe<IncidentStatus>;
 };
 
 export type UpdateLocationStatusInput = {
@@ -1963,6 +1963,7 @@ export const GetLocationDocument = gql`
         numOfFloor
         income
         isActive
+        minPrice
         createdAt
         electricCounterPrice
         locationServices {
@@ -2213,6 +2214,7 @@ export const GetLocationsDocument = gql`
         numOfFloor
         income
         isActive
+        minPrice
         createdAt
         electricCounterPrice
         locationServices {
@@ -2699,6 +2701,7 @@ export type GetLocationQuery = {
       numOfFloor?: number | null;
       income: number;
       isActive: boolean;
+      minPrice?: number | null;
       createdAt: any;
       electricCounterPrice?: number | null;
       locationServices: Array<{
@@ -2791,6 +2794,7 @@ export type GetLocationsQuery = {
       numOfFloor?: number | null;
       income: number;
       isActive: boolean;
+      minPrice?: number | null;
       createdAt: any;
       electricCounterPrice?: number | null;
       updatedAt: any;

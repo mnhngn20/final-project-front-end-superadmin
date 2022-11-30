@@ -13,6 +13,7 @@ query getLocation($id: Float!) {
       numOfFloor
       income
       isActive
+      minPrice
       createdAt
       electricCounterPrice
       locationServices {
