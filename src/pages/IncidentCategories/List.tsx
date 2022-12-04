@@ -4,7 +4,6 @@ import IncidentCategoryForm from './Form';
 import Filters from './Filters';
 import {
   OrderBy,
-  Location,
   useGetIncidentCategoriesQuery,
   useUpsertIncidentCategoryMutation,
   UpsertIncidentCategoriesInput,
@@ -20,6 +19,7 @@ import DefaultImage from '#/assets/images/default.png';
 import PaginationPanel from '#/shared/components/commons/PaginationPanel';
 import { formatDate } from '#/shared/utils/date';
 import CustomTag from '#/shared/components/commons/CustomTag';
+import { ColumnsType } from 'antd/lib/table';
 
 export type GetIncidentCategoriesFilter = {
   name?: string;
@@ -87,7 +87,7 @@ function List() {
     });
   };
 
-  const COLUMNS = useMemo(
+  const COLUMNS: ColumnsType<DeepPartial<IncidentCategory>> = useMemo(
     () => [
       {
         title: 'ID',
@@ -98,7 +98,7 @@ function List() {
         title: 'Image',
         dataIndex: 'icon',
         key: 'icon',
-        render(icon: string) {
+        render(icon?: string) {
           return (
             <Image
               url={icon ?? DefaultImage}
@@ -125,7 +125,7 @@ function List() {
         title: 'Status',
         dataIndex: 'isActive',
         key: 'isActive',
-        render(isActive: boolean) {
+        render(isActive?: boolean) {
           return (
             <CustomTag
               content={isActive ? 'Active' : 'Inactive'}
@@ -157,7 +157,7 @@ function List() {
         dataIndex: 'id',
         key: 'action',
         fixed: 'right' as const,
-        render: (_: unknown, record: DeepPartial<Location>) => {
+        render: (_: unknown, record: DeepPartial<IncidentCategory>) => {
           const onEdit = () => {
             setSelectedItem({
               ...record,
@@ -195,7 +195,7 @@ function List() {
         <Table
           rowKey="id"
           dataSource={incidentCategories}
-          columns={COLUMNS}
+          columns={COLUMNS as any}
           scroll={{ x: 'max-content' }}
           loading={loading || upsertIncidentCategoryLoading}
           onChange={onChange}

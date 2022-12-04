@@ -349,6 +349,7 @@ export type IncidentCategory = {
   icon?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   incidents?: Maybe<Array<Incident>>;
+  isActive?: Maybe<Scalars['Boolean']>;
   name: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
@@ -692,6 +693,7 @@ export enum NotificationType {
   Incident = 'Incident',
   Other = 'Other',
   Payment = 'Payment',
+  Reservation = 'Reservation',
 }
 
 export type Notification = {
@@ -1886,6 +1888,7 @@ export const GetIncidentCategoriesDocument = gql`
         description
         icon
         createdAt
+        isActive
         updatedAt
       }
     }
@@ -1977,6 +1980,9 @@ export const GetLocationDocument = gql`
           id
           phoneNumber
           email
+        }
+        users {
+          id
         }
       }
     }
@@ -2677,6 +2683,7 @@ export type GetIncidentCategoriesQuery = {
       description?: string | null;
       icon?: string | null;
       createdAt: any;
+      isActive?: boolean | null;
       updatedAt: any;
     }>;
   };
@@ -2716,6 +2723,7 @@ export type GetLocationQuery = {
         phoneNumber?: string | null;
         email?: string | null;
       }> | null;
+      users?: Array<{ id: string }> | null;
     } | null;
   };
 };

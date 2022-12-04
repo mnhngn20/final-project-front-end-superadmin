@@ -23,8 +23,8 @@ function IncidentCategoryForm({}: Props) {
       >
         <Input placeholder="Enter Incident category type name" />
       </Form.Item>
-      <Form.Item name="description" label="Location Description">
-        <Input.TextArea rows={3} placeholder="Enter location email" />
+      <Form.Item name="description" label="Incident Description">
+        <Input.TextArea rows={3} placeholder="Enter description" />
       </Form.Item>
       <Form.Item valuePropName="checked" label="Status" name="isActive">
         <Switch defaultChecked />
