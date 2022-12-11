@@ -95,7 +95,6 @@ function Detail() {
             service => service?.id,
           ),
         }}
-        width="1000"
       >
         <LocationForm />
       </FormModal>

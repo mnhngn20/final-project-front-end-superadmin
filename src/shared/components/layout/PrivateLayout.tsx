@@ -10,6 +10,7 @@ import {
   CustomerSVG,
   DevicesOutlineSVG,
   HouseSVG,
+  SettingFilledSVG,
   StarFilledSVG,
   WarningFilledSVG,
 } from '#/assets/svgs';
@@ -41,7 +42,7 @@ function PrivateLayout({
     routes: [
       {
         icon: <Icon component={CustomerSVG} />,
-        name: 'Users',
+        name: 'Admins',
         path: '/users',
       },
       {
@@ -50,19 +51,26 @@ function PrivateLayout({
         path: '/locations',
       },
       {
-        icon: <Icon component={DevicesOutlineSVG} />,
-        name: 'Amenity Types',
-        path: '/amenity-types',
-      },
-      {
-        icon: <Icon component={StarFilledSVG} />,
-        name: 'Location Services',
-        path: '/location-services',
-      },
-      {
-        icon: <Icon component={WarningFilledSVG} />,
-        name: 'Incident Categories',
-        path: '/incident-categories',
+        icon: <Icon component={SettingFilledSVG} />,
+        name: 'Settings',
+        path: '/settings',
+        children: [
+          {
+            icon: <Icon component={DevicesOutlineSVG} />,
+            name: 'Amenity Types',
+            path: '/amenity-types',
+          },
+          {
+            icon: <Icon component={StarFilledSVG} />,
+            name: 'Location Services',
+            path: '/location-services',
+          },
+          {
+            icon: <Icon component={WarningFilledSVG} />,
+            name: 'Incident Categories',
+            path: '/incident-categories',
+          },
+        ],
       },
     ],
   };

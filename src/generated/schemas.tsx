@@ -135,6 +135,7 @@ export type Equipment = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   image?: Maybe<Scalars['String']>;
+  incidents?: Maybe<Array<Incident>>;
   isActive: Scalars['Boolean'];
   location: Location;
   locationId: Scalars['Float'];
@@ -190,6 +191,7 @@ export type GetEquipmentsInput = {
 };
 
 export type GetIncidentCategoriesInput = {
+  isActive?: InputMaybe<Scalars['Boolean']>;
   limit?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
   orderBy?: InputMaybe<OrderBy>;
@@ -324,11 +326,13 @@ export type Incident = {
   dueDate?: Maybe<Scalars['DateTime']>;
   employee?: Maybe<User>;
   employeeId?: Maybe<Scalars['Float']>;
+  equipment?: Maybe<Equipment>;
   fromCustomer?: Maybe<Scalars['Boolean']>;
   id: Scalars['ID'];
   images?: Maybe<Scalars['String']>;
   incidentCategory: IncidentCategory;
   incidentCategoryId: Scalars['Float'];
+  isEquipmentReport?: Maybe<Scalars['Boolean']>;
   location: Location;
   locationId: Scalars['Float'];
   priority?: Maybe<IncidentPriority>;
@@ -535,6 +539,7 @@ export type Mutation = {
   updateLocationStatus: LocationResponse;
   updateMe: UserResponse;
   updatePaymentStatus: PaymentResponse;
+  updatePayments: Scalars['String'];
   updateUser: UserResponse;
   upsertAmenity: AmenityResponse;
   upsertAmenityType: AmenityTypeResponse;
@@ -642,6 +647,10 @@ export type MutationUpdateMeArgs = {
 
 export type MutationUpdatePaymentStatusArgs = {
   input: UpdatePaymentStatusInput;
+};
+
+export type MutationUpdatePaymentsArgs = {
+  input: UpdatePaymentsInput;
 };
 
 export type MutationUpdateUserArgs = {
@@ -994,6 +1003,17 @@ export type UpdatePaymentStatusInput = {
   status: PaymentStatus;
 };
 
+export type UpdatePaymentsInput = {
+  discount?: InputMaybe<Scalars['Float']>;
+  discountType?: InputMaybe<DiscountType>;
+  electricCounter?: InputMaybe<Scalars['Float']>;
+  extraFee?: InputMaybe<Scalars['Float']>;
+  locationReservationId?: InputMaybe<Scalars['Float']>;
+  prePaidFee?: InputMaybe<Scalars['Float']>;
+  status?: InputMaybe<PaymentStatus>;
+  waterPrice?: InputMaybe<Scalars['Float']>;
+};
+
 export type UpdateUserInput = {
   address?: InputMaybe<Scalars['String']>;
   avatar?: InputMaybe<Scalars['String']>;
@@ -1044,10 +1064,12 @@ export type UpsertIncidentInput = {
   description?: InputMaybe<Scalars['String']>;
   dueDate?: InputMaybe<Scalars['DateTime']>;
   employeeId?: InputMaybe<Scalars['Float']>;
+  equipmentId?: InputMaybe<Scalars['Float']>;
   fromCustomer?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['Float']>;
   images?: InputMaybe<Scalars['String']>;
-  incidentCategoryId: Scalars['Float'];
+  incidentCategoryId?: InputMaybe<Scalars['Float']>;
+  isEquipmentReport?: InputMaybe<Scalars['Boolean']>;
   locationId: Scalars['Float'];
   priority?: InputMaybe<IncidentPriority>;
   reportImages?: InputMaybe<Scalars['String']>;
@@ -2314,6 +2336,7 @@ export const GetUserDocument = gql`
         locationId
         location {
           id
+          name
         }
         room {
           name
@@ -2843,7 +2866,7 @@ export type GetUserQuery = {
       locationId?: number | null;
       roomId?: number | null;
       createdAt: any;
-      location?: { id: string } | null;
+      location?: { id: string; name: string } | null;
       room?: { name?: string | null } | null;
     } | null;
   };

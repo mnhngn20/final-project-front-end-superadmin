@@ -291,7 +291,6 @@ function List() {
         onClose={clearSelectedItem}
         selectedItem={selectedItem}
         initialValues={selectedItem}
-        width="1000"
       >
         <LocationForm />
       </FormModal>

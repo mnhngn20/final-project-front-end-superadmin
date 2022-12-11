@@ -15,6 +15,7 @@ query getUser($id: Float!) {
       locationId
       location {
         id
+        name
       }
       room {
         name
