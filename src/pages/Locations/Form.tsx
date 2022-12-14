@@ -78,7 +78,7 @@ function LocationForm({ initialValues }: Props) {
         <Form.Item name="locationServiceIds" label="Services">
           <LocationServiceSelector
             mode="multiple"
-            placeholder="Enter location name"
+            placeholder="Select location service"
             initValues={
               initialValues?.locationServices
                 ? [...initialValues?.locationServices]
