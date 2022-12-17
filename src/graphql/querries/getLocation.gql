@@ -28,9 +28,6 @@ query getLocation($id: Float!) {
         phoneNumber
         email
       }
-      users {
-        id
-      }
     }
   }
 }

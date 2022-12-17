@@ -95,10 +95,23 @@ export type ContactInformation = {
   email?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   location: Location;
-  locationId: Scalars['Float'];
+  locationId?: Maybe<Scalars['Float']>;
   name?: Maybe<Scalars['String']>;
   phoneNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
+};
+
+export type ContactListResponse = ListResponse & {
+  items: Array<ContactInformation>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
+};
+
+export type ContactResponse = IResponse & {
+  contact?: Maybe<ContactInformation>;
+  message?: Maybe<Scalars['String']>;
 };
 
 export type CreateInstallationInput = {
@@ -178,6 +191,17 @@ export type GetAmenityTypesInput = {
   name?: InputMaybe<Scalars['String']>;
   orderBy?: InputMaybe<OrderBy>;
   page?: InputMaybe<Scalars['Float']>;
+};
+
+export type GetContactsInput = {
+  address?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
 };
 
 export type GetEquipmentsInput = {
@@ -523,6 +547,7 @@ export type Mutation = {
   createStripeCheckoutSession: StripeResponse;
   createUser: UserResponse;
   deleteAmenity: Scalars['String'];
+  deleteContact: Scalars['String'];
   deleteEquipment: Scalars['String'];
   deleteLocationReservation: Scalars['String'];
   deleteRoom: Scalars['String'];
@@ -543,6 +568,7 @@ export type Mutation = {
   updateUser: UserResponse;
   upsertAmenity: AmenityResponse;
   upsertAmenityType: AmenityTypeResponse;
+  upsertContact: ContactResponse;
   upsertEquipment: EquipmentResponse;
   upsertIncident: IncidentResponse;
   upsertIncidentCategory: IncidentCategoryResponse;
@@ -582,6 +608,10 @@ export type MutationCreateUserArgs = {
 };
 
 export type MutationDeleteAmenityArgs = {
+  id: Scalars['Float'];
+};
+
+export type MutationDeleteContactArgs = {
   id: Scalars['Float'];
 };
 
@@ -663,6 +693,10 @@ export type MutationUpsertAmenityArgs = {
 
 export type MutationUpsertAmenityTypeArgs = {
   input: UpsertAmenityTypeInput;
+};
+
+export type MutationUpsertContactArgs = {
+  input: UpsertContactInput;
 };
 
 export type MutationUpsertEquipmentArgs = {
@@ -788,6 +822,7 @@ export type Query = {
   getIncidentCategory: IncidentCategoryResponse;
   getIncidents: IncidentListResponse;
   getLocation: LocationResponse;
+  getLocationContacts: ContactListResponse;
   getLocationReservation: LocationReservationResponse;
   getLocationReservations: LocationReservationListResponse;
   getLocationService: LocationServiceResponse;
@@ -846,6 +881,10 @@ export type QueryGetIncidentsArgs = {
 
 export type QueryGetLocationArgs = {
   id: Scalars['Float'];
+};
+
+export type QueryGetLocationContactsArgs = {
+  input: GetContactsInput;
 };
 
 export type QueryGetLocationReservationArgs = {
@@ -1041,6 +1080,15 @@ export type UpsertAmenityTypeInput = {
   id?: InputMaybe<Scalars['Float']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
+};
+
+export type UpsertContactInput = {
+  address?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Float']>;
+  locationId?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
 };
 
 export type UpsertEquipmentInput = {
@@ -2003,9 +2051,6 @@ export const GetLocationDocument = gql`
           phoneNumber
           email
         }
-        users {
-          id
-        }
       }
     }
   }
@@ -2746,7 +2791,6 @@ export type GetLocationQuery = {
         phoneNumber?: string | null;
         email?: string | null;
       }> | null;
-      users?: Array<{ id: string }> | null;
     } | null;
   };
 };
