@@ -7,6 +7,7 @@ import { FormModal } from '#/shared/components/commons/FormModal';
 import DetailLayout from '#/shared/components/layout/DetailLayout';
 import { showError, showSuccess } from '#/shared/utils/notification';
 import { Coordinates } from '#/shared/utils/type';
+import { Skeleton } from 'antd';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import LocationForm from '../Form';
@@ -62,7 +63,7 @@ function Detail() {
   };
 
   return (
-    <>
+    <Skeleton loading={loading}>
       <DetailLayout
         loading={loading}
         title="Location Detail"
@@ -98,7 +99,7 @@ function Detail() {
       >
         <LocationForm />
       </FormModal>
-    </>
+    </Skeleton>
   );
 }
 
