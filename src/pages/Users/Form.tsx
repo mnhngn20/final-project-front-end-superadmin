@@ -69,6 +69,7 @@ function UserForm({ initialValues }: Props) {
         <LocationSelector
           disabled={!!initialValues?.id}
           placeholder="Select user location"
+          initValues={initialValues?.location ? [initialValues?.location] : []}
         />
       </Form.Item>
       <Form.Item name="name" label="Full Name">
