@@ -121,6 +121,7 @@ export type CreateInstallationInput = {
 
 export type CreateStripeCheckoutInput = {
   cancelUrl: Scalars['String'];
+  payerId: Scalars['Float'];
   paymentId: Scalars['Float'];
   successUrl: Scalars['String'];
 };
@@ -310,6 +311,15 @@ export type GetRoomsInput = {
   orderBy?: InputMaybe<OrderBy>;
   page?: InputMaybe<Scalars['Float']>;
   status?: InputMaybe<RoomStatus>;
+};
+
+export type GetTransactionInput = {
+  fromDate?: InputMaybe<Scalars['DateTime']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  orderBy?: InputMaybe<OrderBy>;
+  page?: InputMaybe<Scalars['Float']>;
+  toDate?: InputMaybe<Scalars['DateTime']>;
+  userId?: InputMaybe<Scalars['Float']>;
 };
 
 export type GetUsersInput = {
@@ -636,7 +646,8 @@ export type MutationLoginArgs = {
 };
 
 export type MutationManuallyPayArgs = {
-  id: Scalars['Float'];
+  payerId: Scalars['Float'];
+  paymentId: Scalars['Float'];
 };
 
 export type MutationReadNotificationArgs = {
@@ -834,6 +845,7 @@ export type Query = {
   getPayments: PaymentListResponse;
   getRoom: RoomResponse;
   getRooms: RoomListResponse;
+  getTransactions: TransactionListResponse;
   getUser: UserResponse;
   getUsers: ListUserResponse;
   me: UserResponse;
@@ -927,6 +939,10 @@ export type QueryGetRoomsArgs = {
   input: GetRoomsInput;
 };
 
+export type QueryGetTransactionsArgs = {
+  input: GetTransactionInput;
+};
+
 export type QueryGetUserArgs = {
   id: Scalars['Float'];
 };
@@ -996,6 +1012,24 @@ export type RoomResponse = IResponse & {
 export type StripeResponse = IResponse & {
   message?: Maybe<Scalars['String']>;
   url: Scalars['String'];
+};
+
+export type Transaction = {
+  amount: Scalars['Float'];
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  updatedAt: Scalars['DateTime'];
+  user: User;
+  userId: Scalars['Float'];
+};
+
+export type TransactionListResponse = ListResponse & {
+  items: Array<Transaction>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+  totalPages?: Maybe<Scalars['Float']>;
 };
 
 export enum UserRole {
@@ -1208,6 +1242,7 @@ export type User = {
   role: UserRole;
   room?: Maybe<Room>;
   roomId?: Maybe<Scalars['Float']>;
+  transactions?: Maybe<Array<Transaction>>;
   updatedAt: Scalars['DateTime'];
 };
 
